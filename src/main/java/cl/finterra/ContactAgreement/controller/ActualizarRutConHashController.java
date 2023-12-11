@@ -18,8 +18,6 @@ public class ActualizarRutConHashController {
 
 	@Autowired
 	private RutHashMongoDAO rutDao;
-	
-	
 	public void actualizar() {
 		List<String> tem = null;
 		List<RutConHash> listaAGuardar = new ArrayList<RutConHash>();
@@ -32,35 +30,18 @@ public class ActualizarRutConHashController {
 //			home.close();
 //			e.printStackTrace();
 //		}
-		
-		
 		System.out.println("total de home " + tem.size()  );
 //		TODO: mejorar este codigo para que no consuma tantos recursos
 	List<String> rut = rutDao.findAll().stream().map(m -> m.getRut()).collect(Collectors.toList());
-		
-	System.out.println("total guaraddo "+ rut.size());
-	
-	
-	
-	
+	System.out.println("total guaraddo " + rut.size());
 	tem.removeIf(r -> rut.contains(r));
-	
-	System.out.println("a actualizar "+ tem.size());
+	System.out.println("a actualizar " + tem.size());
 
-	if(tem.size() > 0) {
-		
+	if (tem.size() > 0) {
 		tem.stream().forEach(t -> {
-			listaAGuardar.add(new RutConHash(t, DigestUtils.sha256Hex(t) ));
+			listaAGuardar.add(new RutConHash(t, DigestUtils.sha256Hex(t)));
 		});
-		
-		rutDao.saveAll(listaAGuardar);
-		
+		rutDao.saveAll(listaAGuardar) ;
 	}
-	
-	System.out.println("actualizacion lista");
-		
-	}
-	
-	
-	
+	System.out.println("actualizacion lista");}
 }

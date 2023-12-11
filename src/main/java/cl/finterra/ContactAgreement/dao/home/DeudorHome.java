@@ -19,7 +19,7 @@ public class DeudorHome {
 
 	public DeudorHome() {
 		this.mongoClient = MongoClients.create("mongodb://localhost:27017");
-		this.database = mongoClient.getDatabase("tu_nombre_de_base_de_datos");
+		this.database = mongoClient.getDatabase("ContactPyme");
 	}
 
 	public List<String> getRutClienteDeudor() {
