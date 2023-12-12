@@ -5,7 +5,6 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-
 import org.bson.Document;
 
 public abstract class Conexion {
@@ -57,10 +56,21 @@ public abstract class Conexion {
 
   public void close() {
     if (this.cursor != null) {
-      this.cursor.close();
+      try {
+        this.cursor.close();
+      } catch (Exception e) {
+        // Manejar la excepción, si es necesario
+      }
+      this.cursor = null;
     }
+
     if (this.mongoClient != null) {
-      this.mongoClient.close();
+      try {
+        this.mongoClient.close();
+      } catch (Exception e) {
+        // Manejar la excepción, si es necesario
+      }
+      this.mongoClient = null;
     }
   }
 }

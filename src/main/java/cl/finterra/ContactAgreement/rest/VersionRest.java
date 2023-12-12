@@ -22,11 +22,11 @@ public class VersionRest {
 
 	@GetMapping
 	public ResponseEntity<String> login() {
-//		
-//		DeudorDTO t = new DeudorDTO();
-//		t.setRazonSocial("raxzon");
-//		t.setRut("34738467384");
-//		t.setDv("7");
+
+		DeudorDTO t = new DeudorDTO();
+		t.setRazonSocial("raxzon");
+		t.setRut("34738467384");
+		t.setDv("7");
 //		try {
 //			correo.enviar(t);
 //		} catch (MessagingException e) {
