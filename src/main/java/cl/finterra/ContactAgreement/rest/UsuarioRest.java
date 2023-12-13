@@ -1,5 +1,6 @@
 package cl.finterra.ContactAgreement.rest;
 
+import cl.finterra.ContactAgreement.dto.DeudorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,14 @@ public class UsuarioRest {
 	}
 
 
-
+//	@PostMapping
+//	public void Registrar(@RequestBody DeudorDTO regis) {
+//		if (regis == null) {
+//			throw new Error();
+//		} else {
+//			userController.guardar(regis);
+//		}
+//	}
 
 	
 	

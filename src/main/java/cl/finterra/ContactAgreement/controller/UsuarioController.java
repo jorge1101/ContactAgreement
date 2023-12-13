@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Service
 public class UsuarioController {
-
 	@Autowired
 	UsuarioMongoDAO userDao;
 	
@@ -40,7 +39,7 @@ public class UsuarioController {
 		
 		
 	}
-	
+
 	
 	
 }
