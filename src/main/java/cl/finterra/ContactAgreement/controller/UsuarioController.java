@@ -19,14 +19,14 @@ public class UsuarioController {
 	
 	public boolean login(Usuario user) {	
 		
-		System.out.println(user.getUsuario());
+		System.out.println(user.getEmail());
 		
-	 Optional<Usuario> tem = userDao.findByUsuario(user.getUsuario());
+	 Optional<Usuario> tem = userDao.findByEmail(user.getEmail());
 	 
 	 
 	 if(tem.isPresent()) {
 		 
-		 if(tem.get().getContrasena().equals(user.getContrasena())) {
+		 if(tem.get().getPassword().equals(user.getPassword())) {
 			 return true;
 		 } else {
 			 return false;

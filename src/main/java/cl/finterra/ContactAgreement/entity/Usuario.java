@@ -18,6 +18,6 @@ public class Usuario {
 	@Id
 	private String id;
 
-	private String usuario ; //cambiar por correo
-	private String contrasena;
+	private String email; //cambiar por correo
+	private String password;
 }

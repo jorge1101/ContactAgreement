@@ -20,7 +20,8 @@ public class UsuarioRest {
 	@PostMapping("/login")
 	public ResponseEntity<Boolean> login(@RequestBody Usuario usuario) {
 		System.out.println("Login : " + usuario);
-
+		boolean loginSuccess = userController.login(usuario);
+		System.out.println(loginSuccess);
 		return ResponseEntity.ok(userController.login(usuario));
 	}
 
