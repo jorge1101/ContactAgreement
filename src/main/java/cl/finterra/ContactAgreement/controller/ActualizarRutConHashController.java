@@ -4,15 +4,12 @@ package cl.finterra.ContactAgreement.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import cl.finterra.ContactAgreement.dao.RutHashMongoDAO;
 import cl.finterra.ContactAgreement.dao.home.DeudorHome;
 import cl.finterra.ContactAgreement.entity.RutConHash;
-
 @Service
 public class ActualizarRutConHashController {
 

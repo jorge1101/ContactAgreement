@@ -60,6 +60,7 @@ public class DeudorController {
 //			return salida;
 //		}
 
+
 		Optional<Deudor> deu = deudorMongoDAO.findByRut(salida.getRut());
 
 		if (deu.isPresent()) {

@@ -22,21 +22,14 @@ public class UsuarioController {
 		System.out.println(user.getUsuario());
 		
 	 Optional<Usuario> tem = userDao.findByUsuario(user.getUsuario());
-	 
-	 
-	 if(tem.isPresent()) {
-		 
-		 if(tem.get().getContrasena().equals(user.getContrasena())) {
-			 return true;
-		 } else {
-			 return false;
-		 }
-		 
-		 
-	 } else {
-		 
-		 return false;
-	 }
+
+
+		return tem.isPresent() && tem.get().getContrasena().equals(user.getContrasena()) ? true : false;
+//		if( tem.isPresent() && tem.get().getContrasena().equals(user.getContrasena()) ) {
+//			return true;
+//		} else {
+//			return false;
+//		}
 		
 		
 	}
