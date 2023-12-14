@@ -20,4 +20,9 @@ public class Usuario {
 
 	private String email; //cambiar por correo
 	private String password;
+	private String accessToken;
+
+
+
 }
+
