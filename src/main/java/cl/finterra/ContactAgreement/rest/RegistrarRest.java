@@ -2,7 +2,6 @@ package cl.finterra.ContactAgreement.rest;
 
 import cl.finterra.ContactAgreement.Security.JwtTokenProvider;
 import cl.finterra.ContactAgreement.controller.AgregarEliminarController;
-import cl.finterra.ContactAgreement.entity.Usuario;
 import cl.finterra.ContactAgreement.entity.AgregarEliminar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,28 +26,27 @@ public class RegistrarRest {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AgregarEliminarController> register(@RequestBody AgregarEliminarController agregarEliminar) {
-        System.out.println("Registro de AgregarEliminar: " + agregarEliminar);
+    public ResponseEntity<?> register(@RequestBody AgregarEliminar nuevoAgregarEliminar) {
+        System.out.println("Registro de AgregarEliminar: " + nuevoAgregarEliminar);
 
-        // Puedes realizar lógica adicional aquí para persistir AgregarEliminar en la base de datos
+        // ... (lógica adicional para persistir AgregarEliminar en la base de datos)
 
-        // Generar usuario con email y contraseña asociado al AgregarEliminar
-        Usuario usuario = Usuario.builder()
-                .email(agregarEliminar.getCorreo())
-                .password("genera-una-contraseña-aleatoria-o-lógica")
-                .build();
-        boolean registrationSuccess = AgregarEliminarController.register(agregarEliminar, usuario);
+        // Guardar en la base de datos utilizando el método save del repositorio
+        AgregarEliminar savedAgregarEliminar = AgregarEliminarController.saveAgregarEliminar(nuevoAgregarEliminar);
 
-        if (registrationSuccess) {
-            String accessToken = tokenProvider.generateAccessToken(usuario.getEmail());
-            usuario.setAccessToken(accessToken);
+        if (savedAgregarEliminar != null) {
+            String accessToken = tokenProvider.generateAccessToken(savedAgregarEliminar.getCorreo());
             System.out.println("AccessToken generado: " + accessToken);
 
             // Devolver el objeto AgregarEliminar modificado en la respuesta
-            return ResponseEntity.ok(agregarEliminar);
+            return ResponseEntity.ok(savedAgregarEliminar);
         } else {
             // Devolver un objeto AgregarEliminar vacío o con datos predeterminados en caso de fallo de registro
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AgregarEliminarController());
+            System.out.println("Fallo de registro. No se pudo registrar.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AgregarEliminar());
         }
     }
+
+
+
 }
