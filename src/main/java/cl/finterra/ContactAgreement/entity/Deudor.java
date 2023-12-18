@@ -36,7 +36,7 @@ public class Deudor {
 	private LocalDate fecha;
 
 	@Field("agregarEliminar")
-	private List<AgregarEliminar> agregarEliminar;
+	public List<AgregarEliminar> agregarEliminar;
 
 	public void addAgregarEliminar(AgregarEliminar item) {
 		if(agregarEliminar == null) {
