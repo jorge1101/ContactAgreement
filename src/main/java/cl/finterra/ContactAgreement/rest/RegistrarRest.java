@@ -6,6 +6,8 @@ import cl.finterra.ContactAgreement.entity.AgregarEliminar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -47,6 +49,25 @@ public class RegistrarRest {
         }
     }
 
+    private void validatePassword(String password, BindingResult result) {
+        // Realizar tus validaciones personalizadas aquí
+        // Ejemplo: al menos 4 números, un punto y una mayúscula
+        // Simplemente como ejemplo, ajusta según tus requisitos
+        if (!password.matches("(.*[0-9]){4,}.*") || !password.contains(".") || !password.matches(".*[A-Z].*")) {
+            result.addError(new FieldError("Usuario", "password", "La contraseña no cumple con los requisitos mínimos"));
+        }
+    }
 
+    // Método para obtener detalles detallados de errores de validación
+    private String getValidationErrorDetails(BindingResult result) {
+        StringBuilder errorMessage = new StringBuilder("Errores de validación: ");
+        for (FieldError error : result.getFieldErrors()) {
+            errorMessage.append(error.getField())
+                    .append(" - ")
+                    .append(error.getDefaultMessage())
+                    .append("; ");
+        }
+        return errorMessage.toString();
+    }
 
 }

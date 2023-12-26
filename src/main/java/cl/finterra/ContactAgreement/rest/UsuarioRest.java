@@ -4,10 +4,14 @@ import cl.finterra.ContactAgreement.Security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import cl.finterra.ContactAgreement.controller.UsuarioController;
 import cl.finterra.ContactAgreement.entity.Usuario;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("usuario")
@@ -23,7 +27,21 @@ public class UsuarioRest {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<Usuario> login(@RequestBody Usuario usuario) {
+	public ResponseEntity<?> login(@Valid @RequestBody Usuario usuario, BindingResult result) {
+		if (result.hasErrors()) {
+			// Construir un mensaje de error más descriptivo
+			StringBuilder errorMessage = new StringBuilder("Error de validación: ");
+
+			for (FieldError error : result.getFieldErrors()) {
+				errorMessage.append(error.getField())
+						.append(" ")
+						.append(error.getDefaultMessage())
+						.append("; ");
+			}
+
+			return ResponseEntity.badRequest().body(errorMessage.toString());
+		}
+
 		System.out.println("Login: " + usuario);
 		boolean loginSuccess = userController.login(usuario);
 		System.out.println(loginSuccess);
@@ -40,6 +58,7 @@ public class UsuarioRest {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Usuario());
 		}
 	}
+
 
 
 
