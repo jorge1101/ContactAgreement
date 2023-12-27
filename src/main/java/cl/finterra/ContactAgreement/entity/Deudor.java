@@ -13,6 +13,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 public class Deudor {
 	@Id
 	private String id;
+	@NotBlank(message = "El rut es obligatorio")
 	private String rut;
 	private String dv;
 	private String nombre;

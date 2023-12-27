@@ -11,5 +11,5 @@ public interface UsuarioMongoDAO extends MongoRepository<Usuario, String> {
 	Optional<Usuario> findByEmail(String usuario);
 
 
-
+	boolean existsByEmail(String email);
 }
