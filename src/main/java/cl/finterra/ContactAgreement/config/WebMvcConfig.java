@@ -32,7 +32,5 @@ public class WebMvcConfig  implements WebMvcConfigurer {
                 .requestMatchers(HttpMethod.OPTIONS, "/*").permitAll();
     }
     }
-     
-
-
+    
 
