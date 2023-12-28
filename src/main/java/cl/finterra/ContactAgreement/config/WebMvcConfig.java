@@ -18,10 +18,10 @@ public class WebMvcConfig  implements WebMvcConfigurer {
         registry.addMapping("/**").allowedMethods("*").allowedOrigins("*").maxAge(3600);
     }
 
+
     public void configure(HttpSecurity http) throws Exception {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
-
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("GET");
@@ -32,5 +32,5 @@ public class WebMvcConfig  implements WebMvcConfigurer {
                 .requestMatchers(HttpMethod.OPTIONS, "/*").permitAll();
     }
     }
-    
+
 

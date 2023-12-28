@@ -70,7 +70,7 @@ public class UsuarioRest {
 		// Realizar tus validaciones personalizadas aquí
 		// Ejemplo: al menos 4 números, un punto y una mayúscula
 		// Simplemente como ejemplo, ajusta según tus requisitos
-		if (!password.matches("(.*[0-9]){4,}.*") || !password.contains(".") || !password.matches(".*[A-Z].*")) {
+		if (!password.matches("(.*[0-9]){2,}.*") || !password.contains(".") || !password.matches(".*[A-Z].*" ) || !password.matches(".*[a-z].*")) {
 			result.addError(new FieldError("Usuario", "password", "La contraseña no cumple con los requisitos mínimos"));
 		}
 	}
