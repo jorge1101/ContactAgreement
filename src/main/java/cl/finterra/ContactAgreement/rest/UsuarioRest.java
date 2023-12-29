@@ -1,7 +1,9 @@
 package cl.finterra.ContactAgreement.rest;
 
 import cl.finterra.ContactAgreement.Security.JwtTokenProvider;
+import cl.finterra.ContactAgreement.controller.UsuarioController;
 import cl.finterra.ContactAgreement.dao.UsuarioMongoDAO;
+import cl.finterra.ContactAgreement.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import cl.finterra.ContactAgreement.controller.UsuarioController;
-import cl.finterra.ContactAgreement.entity.Usuario;
 
 import javax.validation.Valid;
 

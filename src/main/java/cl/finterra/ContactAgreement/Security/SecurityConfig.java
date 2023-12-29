@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -12,6 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -22,57 +24,57 @@ public class SecurityConfig {
         return new JwtTokenProvider();
     }
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/usuario/login").hasRole("ADMIN")
-                        .requestMatchers("/usuario/encontrar-usuario").hasRole("ADMIN")
-                        .requestMatchers("/usuario/{email}/actualizar-contrasena").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                );
-        return http.build();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests()
-//                .requestMatchers("/usuario/{email}/actualizar-contrasena","/usuario/login","/usuario/{email}/actualizar-contrasena").permitAll();
-//                // Otras configuraciones de autorización aquí
-//
-//    }
-
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .formLogin(AbstractHttpConfigurer::disable)
+                .requestCache(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/usuario/login", "/usuario/encontrar-usuario").permitAll()
+                        .requestMatchers("/usuario/{email}/actualizar-contrasena").permitAll()
+                        .anyRequest().authenticated()
+                ).httpBasic(AbstractHttpConfigurer::disable);
+        return http.build();
+    }
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                //crea o instancia los roles, username y password
-                .username("user")
-                .password("password")
+        //crea o instancia los roles, username y password
+        //Se puede usar WithDefaultPasswordEncoder pero esta obsoleto y es preferible usar BCript
+        UserDetails user = User.withUsername("user")
+                .password(passwordEncoder().encode("password"))
                 .roles("ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user);
     }
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        //permite las rutas especificadas y bloquea el resto
-        return (web) -> web.ignoring().requestMatchers(
-                "/usuario/login",
-                "/usuario/encontrar-usuario",
-                "/usuario/{email}/actualizar-contrasena"
-        );
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("GET");
-        configuration.addAllowedMethod("PUT");
-        configuration.addAllowedMethod("POST");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+    CorsConfigurationSource corsConfigurationSource() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("DELETE");
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        //permite las rutas especificadas y bloquea el resto
+//        return (web) -> web.ignoring().requestMatchers(
+//                "/usuario/login",
+//                "/usuario/encontrar-usuario",
+//                "/usuario/{email}/actualizar-contrasena"
+//        );
+//    }
 
 }
