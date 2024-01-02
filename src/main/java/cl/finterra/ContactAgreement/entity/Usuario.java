@@ -21,10 +21,11 @@ public class Usuario {
 	@NotBlank(message = "El email es obligatorio")
 	@Email(message = "El email debe ser válido")
 	private String email;
-
 	@NotBlank(message = "La contraseña es obligatoria")
 	private String password;
+	private String name;
 	private String accessToken;
+	private String rut;
 
 
 

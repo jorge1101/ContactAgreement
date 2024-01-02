@@ -20,22 +20,21 @@ public class UsuarioController {
 
 	 Optional<Usuario> tem = userDao.findByEmail(user.getEmail());
 
+		Optional<Usuario> temo = userDao.findByRut(user.getRut());
 
-
-		if(tem.isPresent()) {
-
-			if(tem.get().getPassword().equals(user.getPassword())) {
-
+		if (tem.isPresent() || temo.isPresent()) {
+			// Verificar las contraseñas y realizar tu lógica
+			if ((tem.isPresent() && tem.get().getPassword().equals(user.getPassword())) ||
+					(temo.isPresent() && temo.get().getPassword().equals(user.getPassword()))) {
 				return true;
+				
 			} else {
 				return false;
 			}
-
-
 		} else {
-
 			return false;
 		}
+
 
 
 	}

@@ -11,7 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import cl.finterra.ContactAgreement.dto.UsuarioDTO;
 import javax.validation.Valid;
 
 @RestController
@@ -54,8 +54,8 @@ public class UsuarioRest {
 			String accessToken = tokenProvider.generateAccessToken(usuario.getEmail());
 			usuario.setAccessToken(accessToken);
 			System.out.println("AccessToken: " + accessToken);
-
 			// Devolver el objeto Usuario modificado en la respuesta
+
 			return ResponseEntity.ok(usuario);
 		} else {
 			// Devolver un objeto Usuario vacío o con datos predeterminados en caso de fallo de autenticación
@@ -87,6 +87,12 @@ public class UsuarioRest {
 	}
 	@PostMapping("/encontrar-usuario")
 	public ResponseEntity<?> buscarUsuarioPorEmail(@RequestBody String email) {
+		String rut = UsuarioDTO.getRut();
+
+		// Verificar si tanto el email como el RUT están presentes
+		if (email == null && rut == null) {
+			return new ResponseEntity<>("Debe proporcionar al menos un parámetro (email o RUT)", HttpStatus.BAD_REQUEST);
+		}
 		// Obtener el usuario por correo electrónico
 		System.out.println(email.getClass().getSimpleName());
 		Usuario usuarioEncontrado = userDao.findByEmail(email).orElse(null);
