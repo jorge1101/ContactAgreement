@@ -26,14 +26,14 @@ public class VersionRest {
 		DeudorDTO t = new DeudorDTO();
 		t.setRazonSocial("raxzon");
 		t.setRut("34738467384");
-		t.setDv("7");
+		t.setDv("7");//pendientes los comentados
 //		try {
 //			correo.enviar(t);
 //		} catch (MessagingException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-//		
+
 		return ResponseEntity.ok("Verson 1.7");
 	}
 	
@@ -44,12 +44,12 @@ public class VersionRest {
 		t.setRut("34738467384");
 		t.setDv("7");
 	
-		try {
-			correo.enviar(t);
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			correo.enviar(t);
+//		} catch (MessagingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		return ResponseEntity.ok("enviado...");
 	}

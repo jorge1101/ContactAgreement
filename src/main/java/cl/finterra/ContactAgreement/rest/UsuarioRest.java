@@ -112,9 +112,7 @@ public class UsuarioRest {
 
 	@PostMapping("/nombre")
 	public String name(@Valid @RequestBody Usuario usuario, BindingResult result) {
-	String name = UsuarioDTO.getName();
-
-	return name;
+        return UsuarioDTO.getName();
 	}
 	@PutMapping("/{email}/actualizar-contrasena")
 	public ResponseEntity<?> actualizarContrasena(

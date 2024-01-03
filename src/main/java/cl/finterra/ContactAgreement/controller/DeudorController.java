@@ -120,7 +120,7 @@ public class DeudorController {
 		deudor.setDetalleOtroCondicion(deu.getDetalleOtroCondicion());
 		deudor.setInformacionAdicional(deu.getInformacionAdicional());
 
-		deu.getContactoDeduor().stream().forEach(t -> {
+		deu.getContactoDeduor().forEach(t -> {
 			deudor.addAgregarEliminar(AgregarEliminar.builder().correo(t.getCorreo()).direccion(t.getDireccion())
 					.estado(t.getEstado()).nombre(t.getNombre()).telefono(t.getTelefono()).build());
 		});

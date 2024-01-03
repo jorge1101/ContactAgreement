@@ -1,6 +1,7 @@
 package cl.finterra.ContactAgreement.controller;
 
 //import java.sql.SQLException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,11 +24,11 @@ public class ActualizarRutConHashController {
 		List<RutConHash> listaAGuardar = new ArrayList<RutConHash>();
 		DeudorHome home = new DeudorHome();
 //		home.conect();
-//		try {
-//			tem = home.getRutClienteDeudor();
+		tem = home.getRutClienteDeudor();
 //			home.close();
-//		} catch (SQLException e) {
-//			home.close();
+
+//				catch (SQLException e) {
+////			home.close();
 //			e.printStackTrace();
 //		}
 		System.out.println("total de home " + tem.size()  );

@@ -1,10 +1,7 @@
 package cl.finterra.ContactAgreement.dto;
 
 import cl.finterra.ContactAgreement.entity.Deudor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,6 +18,7 @@ public class DeudorDTO {
 	private String dv;
 	private String razonSocial;
 	private String direccion;
+	@Getter
 	private List<ContactoDTO> contactoDeduor;
 	private String condicionPago;
 	private boolean avanzarJuntos;
@@ -58,8 +56,16 @@ public class DeudorDTO {
 		contactoDeduor =  deu.getAgregarEliminar().stream()
 				.map(m -> ContactoDTO.builder().correo(m.getCorreo()).direccion(m.getDireccion()).estado(m.getEstado())
 						.nombre(m.getNombre()).telefono(m.getTelefono()).build()).collect(Collectors.toList());
-	
+
 
 	}
 
+
+	public void setContactoDeduor(List<ContactoDTO> contactoDeduor) {
+		if (contactoDeduor == null) {
+			this.contactoDeduor = new ArrayList<>();
+		} else {
+			this.contactoDeduor = contactoDeduor;
+		}
+	}
 }
