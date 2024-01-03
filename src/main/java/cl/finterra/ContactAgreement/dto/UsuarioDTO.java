@@ -21,5 +21,6 @@ public class UsuarioDTO {
     private String accessToken;
     @Getter
     private static String rut;
-    private String name;
+    @Getter
+    private static String name;
 }

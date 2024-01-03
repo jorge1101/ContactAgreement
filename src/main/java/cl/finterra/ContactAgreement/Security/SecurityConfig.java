@@ -33,8 +33,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/usuario/login", "/usuario/encontrar-usuario").permitAll()
-                        .requestMatchers("/usuario/{email}/actualizar-contrasena").permitAll()
+                        .requestMatchers("/usuario/login",
+                                         "/usuario/encontrar-usuario").permitAll()
+                        .requestMatchers("/usuario/{email}/actualizar-contrasena",
+                                         "/usuario/nombre",
+                                         "/deudor/{rut}",
+                                         "/deudor",
+                                         "/version",
+                                         "/version/correo",
+                                         "/actualiza-rut-deudor").permitAll()
                         .anyRequest().authenticated()
                 ).httpBasic(AbstractHttpConfigurer::disable);
         return http.build();
