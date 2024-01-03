@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import cl.finterra.ContactAgreement.dto.UsuarioDTO;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("usuario")
@@ -47,21 +48,20 @@ public class UsuarioRest {
 		}
 
 		System.out.println("Login: " + usuario);
-		boolean loginSuccess = userController.login(usuario);
-		System.out.println(loginSuccess);
+		Optional<Usuario> authenticatedUser = userController.login(usuario);
 
-		if (loginSuccess) {
+		if (authenticatedUser.isPresent()) {
 			String accessToken = tokenProvider.generateAccessToken(usuario.getEmail());
-			usuario.setAccessToken(accessToken);
+			authenticatedUser.get().setAccessToken(accessToken);
 			System.out.println("AccessToken: " + accessToken);
 			// Devolver el objeto Usuario modificado en la respuesta
-
-			return ResponseEntity.ok(usuario);
+			return ResponseEntity.ok(authenticatedUser.get());
 		} else {
 			// Devolver un objeto Usuario vacío o con datos predeterminados en caso de fallo de autenticación
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Usuario());
 		}
 	}
+
 
 
 

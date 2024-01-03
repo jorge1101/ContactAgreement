@@ -9,5 +9,6 @@ public interface UsuarioMongoDAO extends MongoRepository<Usuario, String> {
 
 	Optional<Usuario> findByRut(String usuario);
 
+
 	boolean existsByEmail(String email);
 }

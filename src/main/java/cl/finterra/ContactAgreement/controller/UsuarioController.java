@@ -14,29 +14,22 @@ public class UsuarioController {
 	@Autowired
 	UsuarioMongoDAO userDao;
 
-	public boolean login(Usuario user) {
+	public Optional<Usuario> login(Usuario user) {
 
 		System.out.println(user.getEmail());
 
-	 Optional<Usuario> tem = userDao.findByEmail(user.getEmail());
-
+		Optional<Usuario> tem = userDao.findByEmail(user.getEmail());
 		Optional<Usuario> temo = userDao.findByRut(user.getRut());
 
 		if (tem.isPresent() || temo.isPresent()) {
 			// Verificar las contraseñas y realizar tu lógica
 			if ((tem.isPresent() && tem.get().getPassword().equals(user.getPassword())) ||
 					(temo.isPresent() && temo.get().getPassword().equals(user.getPassword()))) {
-				return true;
-				
-			} else {
-				return false;
+				return tem.isPresent() ? tem : temo;
 			}
-		} else {
-			return false;
 		}
 
-
-
+		return Optional.empty();
 	}
 
 
