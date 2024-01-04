@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import cl.finterra.ContactAgreement.dto.UsuarioDTO;
 import javax.validation.Valid;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("usuario")
@@ -61,9 +64,6 @@ public class UsuarioRest {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Usuario());
 		}
 	}
-
-
-
 
 	private void validatePassword(String password, BindingResult result) {
 		// Realizar tus validaciones personalizadas aquí

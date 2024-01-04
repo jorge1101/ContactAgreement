@@ -18,13 +18,13 @@ public class UsuarioController {
 		System.out.println(user.getEmail());
 
 		Optional<Usuario> tem = userDao.findByEmail(user.getEmail());
-		Optional<Usuario> temo = userDao.findByRut(user.getRut());
-
-		if (tem.isPresent() || temo.isPresent()) {
+//		Optional<Usuario> temo = userDao.findByRut(user.getRut());
+//		if (tem.isPresent() || temo.isPresent()) {
+		if (tem.isPresent() ) {
 			// Verificar las contraseñas y realizar tu lógica
 			if ((tem.isPresent() && tem.get().getPassword().equals(user.getPassword())) ||
-					(temo.isPresent() && temo.get().getPassword().equals(user.getPassword()))) {
-				return tem.isPresent() ? tem : temo;
+					(tem.isPresent() && tem.get().getPassword().equals(user.getPassword()))) {
+				return tem.isPresent() ? tem : tem;
 			}
 		}
 

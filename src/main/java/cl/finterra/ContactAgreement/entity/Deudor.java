@@ -14,6 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -26,17 +28,26 @@ public class Deudor {
 	@NotBlank(message = "El rut es obligatorio")
 	private String rut;
 	private String dv;
+	@NotBlank(message = "El campo nombre no puede estar en blanco")
 	private String nombre;
+	@NotBlank(message = "El campo direccion no puede estar en blanco")
 	private String direccion;
 	private String rutHash;
+	@NotBlank(message = "El campo formaDepago no puede estar en blanco")
 	private String formaDepago;
 	private String detalleOtro;
+	@NotBlank(message = "El campo condicionPago no puede estar en blanco")
 	private String condicionPago;
+	@NotNull(message = "El campo contactarAvanzarJuntos no puede ser nulo")
 	private boolean contactarAvanzarJuntos;
+	@NotBlank(message = "El campo condicionAcepacion no puede estar en blanco")
 	private String condicionAcepacion;
+	@NotBlank(message = "El campo detalleOtroCondicion no puede estar en blanco")
 	private String detalleOtroCondicion;
+	@Size(max = 600, message = "El campo informacionAdicional debe tener como máximo {max} caracteres")
 	private String informacionAdicional;
 	private LocalDate fecha;
+
 
 	@Field("agregarEliminar")
 	public List<AgregarEliminar> agregarEliminar;
