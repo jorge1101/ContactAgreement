@@ -21,38 +21,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("usuario")
 public class UsuarioRest {
-
 	@Autowired
 	UsuarioController userController;
-
 	@Autowired
 	private UsuarioMongoDAO userDao;
-
 	private final JwtTokenProvider tokenProvider;
-
 	public UsuarioRest(JwtTokenProvider tokenProvider) {
 		this.tokenProvider = tokenProvider;
 	}
-
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody Usuario usuario, BindingResult result) {
 		if (result.hasErrors()) {
 			// Construir un mensaje de error más descriptivo
 			StringBuilder errorMessage = new StringBuilder("Error de validación: ");
-
 			for (FieldError error : result.getFieldErrors()) {
 				errorMessage.append(error.getField())
 						.append(" ")
 						.append(error.getDefaultMessage())
 						.append("; ");
 			}
-
 			return ResponseEntity.badRequest().body(errorMessage.toString());
 		}
-
 		System.out.println("Login: " + usuario);
 		Optional<Usuario> authenticatedUser = userController.login(usuario);
-
 		if (authenticatedUser.isPresent()) {
 			String accessToken = tokenProvider.generateAccessToken(usuario.getEmail());
 			authenticatedUser.get().setAccessToken(accessToken);
@@ -74,7 +65,7 @@ public class UsuarioRest {
 		}
 	}
 
-	// Método para obtener detalles detallados de errores de validación
+	// Método para obtener detalles de errores de validación
 	private String getValidationErrorDetails(BindingResult result) {
 		StringBuilder errorMessage = new StringBuilder("Errores de validación: ");
 		for (FieldError error : result.getFieldErrors()) {

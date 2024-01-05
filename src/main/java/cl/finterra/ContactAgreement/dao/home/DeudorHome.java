@@ -19,27 +19,27 @@ public class DeudorHome {
 
 	public DeudorHome() {
 		this.mongoClient = MongoClients.create("mongodb://localhost:27017");
-		this.database = mongoClient.getDatabase("ContactPyme");
+		this.database = mongoClient.getDatabase("PymeDatabase");
 	}
 
 	public List<String> getRutClienteDeudor() {
 		List<String> salida = new ArrayList<>();
-		MongoCollection<Document> clientesCollection = database.getCollection("clientes");
+		MongoCollection<Document> clientesCollection = database.getCollection("deudor");
 
-//		try (MongoCursor<Document> cursor = clientesCollection.distinct("CL_RUT", String.class).iterator()) {
-//			while (cursor.hasNext()) {
-//				salida.add(cursor.next());
-//			}
-//		}
+		try (MongoCursor<String> cursor = clientesCollection.distinct("CL_RUT", String.class).iterator()) {
+			while (cursor.hasNext()) {
+				salida.add(String.valueOf(cursor.next()));
+			}
+		}
 
 		return salida;
 	}
 
-	public DeudorDTO getDedorContacto(String rut) {
+	public DeudorDTO getDeudorContacto(String rut) {
 		DeudorDTO doc = getDeudor(rut);
 		List<ContactoDTO> listContacto = new ArrayList<>();
 
-		MongoCollection<Document> contactosCollection = database.getCollection("contactos_deudor");
+		MongoCollection<Document> contactosCollection = database.getCollection("contacto");
 
 		try (MongoCursor<Document> cursor = contactosCollection.find(new Document("cl_rut", rut)).iterator()) {
 			while (cursor.hasNext()) {
@@ -53,7 +53,7 @@ public class DeudorHome {
 			}
 		}
 
-		doc.setContactoDeduor(listContacto);
+		doc.setContactoDeudor(listContacto);
 		return doc;
 	}
 

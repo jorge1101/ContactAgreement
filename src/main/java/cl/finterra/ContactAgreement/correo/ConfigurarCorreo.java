@@ -1,6 +1,5 @@
 package cl.finterra.ContactAgreement.correo;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -30,8 +29,9 @@ public class ConfigurarCorreo {
 		MimeMessage mimeMessage = emailSender.createMimeMessage();
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-		message.setFrom("cestrada@finterra.cl");
-		message.setTo("cestrada@finterra.cl");
+//		message.setFrom("cestrada@finterra.cl");
+//		message.setTo("cestrada@finterra.cl");
+		message.setFrom("jor.fernandezj@duocuc.cl");
 		message.setSubject("Registro Pagadores");
 		message.setText(body.toString(), true);
 

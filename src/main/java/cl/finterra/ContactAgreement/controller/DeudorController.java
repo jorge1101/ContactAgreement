@@ -18,7 +18,7 @@ import cl.finterra.ContactAgreement.dao.RutHashMongoDAO;
 import cl.finterra.ContactAgreement.dao.home.DeudorHome;
 import cl.finterra.ContactAgreement.dto.ContactoDTO;
 import cl.finterra.ContactAgreement.dto.DeudorDTO;
-import cl.finterra.ContactAgreement.entity.AgregarEliminar;
+import cl.finterra.ContactAgreement.entity.Contacto;
 import cl.finterra.ContactAgreement.entity.Deudor;
 import cl.finterra.ContactAgreement.entity.RutConHash;
 
@@ -41,36 +41,30 @@ public class DeudorController {
 		if(rutHash.equals("")) {	
 			return null;
 		}
-	  Optional<RutConHash> tem = rutDao.findByrutHash(rutHash);
+	  Optional<RutConHash> tem = rutDao.findByRutHash(rutHash);
 	  
 	  if(!tem.isPresent()) {
 		  return null;
 	  }
 		
 		DeudorDTO salida = new DeudorDTO();
-		String rut = rutDao.findByrutHash(rutHash).get().getRut();
+		String rut = rutDao.findByRutHash(rutHash).get().getRut();
 		DeudorHome home = new DeudorHome();
 
-//		try {
-//			salida = home.getDedorContacto(rut);
+		salida = home.getDeudorContacto(rut);
 //			home.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			home.close();
-//			return salida;
-//		}
 
 		Optional<Deudor> deu = deudorMongoDAO.findByRut(salida.getRut());
 
 		if (deu.isPresent()) {
 
-			salida.getContactoDeduor().removeIf(r -> deu.get().getAgregarEliminar().stream().anyMatch(a -> {
+			salida.getContactoDeudor().removeIf(r -> deu.get().getAgregarEliminar().stream().anyMatch(a -> {
 				return (a.getNombre().equalsIgnoreCase(r.getNombre()) && a.getCorreo().equalsIgnoreCase(r.getCorreo())
 						&& a.getTelefono().equals(r.getTelefono()) && a.getDireccion().equals(r.getDireccion()));
 			}));
 
-			for (AgregarEliminar iterf : deu.get().getAgregarEliminar()) {
-			
+			for (Contacto iterf : deu.get().getAgregarEliminar()) {
+
 				if(iterf.getEstado().equals("eliminar") || iterf.getEstado().equals("nuevo")) {
 					salida.addContactoDeudor(ContactoDTO.builder().nombre(iterf.getNombre()).correo(iterf.getCorreo())
 							.direccion(iterf.getDireccion()).estado(iterf.getEstado()).telefono(iterf.getTelefono())
@@ -105,11 +99,9 @@ public class DeudorController {
 
 		} else {
 			deudor = deuTem.get();
-			deu.getContactoDeduor().removeIf(r -> deudor.getAgregarEliminar().stream().anyMatch(a -> {
-				return (a.getNombre().equalsIgnoreCase(r.getNombre()) && a.getCorreo().equalsIgnoreCase(r.getCorreo())
-						&& a.getEstado().equals(r.getEstado()) && a.getTelefono().equals(r.getTelefono())
-						&& a.getDireccion().equals(r.getDireccion()));
-			}));
+			if (deu.getContactoDeudor() != null) {
+				deu.getContactoDeudor();
+			}
 		}
 		deudor.setFormaDepago(deu.getFormaDePago());
 		deudor.setContactarAvanzarJuntos(deu.isAvanzarJuntos());
@@ -120,8 +112,8 @@ public class DeudorController {
 		deudor.setDetalleOtroCondicion(deu.getDetalleOtroCondicion());
 		deudor.setInformacionAdicional(deu.getInformacionAdicional());
 
-		deu.getContactoDeduor().forEach(t -> {
-			deudor.addAgregarEliminar(AgregarEliminar.builder().correo(t.getCorreo()).direccion(t.getDireccion())
+		deu.getContactoDeudor().stream().forEach(t -> {
+			deudor.addAgregarEliminar(Contacto.builder().correo(t.getCorreo()).direccion(t.getDireccion())
 					.estado(t.getEstado()).nombre(t.getNombre()).telefono(t.getTelefono()).build());
 		});
 

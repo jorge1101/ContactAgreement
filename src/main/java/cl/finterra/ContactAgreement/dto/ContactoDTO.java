@@ -1,20 +1,21 @@
 package cl.finterra.ContactAgreement.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactoDTO {
-
+    @Getter
 	private String nombre;
+	@Getter
 	private String correo;
+	@Getter
 	private String telefono;
+	@Getter
 	private String direccion;
+	@Getter
 	private String estado;
 	
 	

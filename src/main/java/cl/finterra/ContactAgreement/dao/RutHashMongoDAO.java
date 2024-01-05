@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import cl.finterra.ContactAgreement.entity.RutConHash;
 public interface RutHashMongoDAO extends MongoRepository<RutConHash, String> {
-	Optional<RutConHash> findByrutHash(String rutHash);
+	Optional<RutConHash> findByRutHash(String rutHash);
 }

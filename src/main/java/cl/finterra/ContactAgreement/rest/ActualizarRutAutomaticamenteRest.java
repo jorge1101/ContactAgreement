@@ -12,7 +12,6 @@ public class ActualizarRutAutomaticamenteRest {
 
 	@Autowired
 	private ActualizarRutConHashController controller;
-	
 	@GetMapping
 	public void deudor() {
 		System.out.println("preparar para actualizar ");

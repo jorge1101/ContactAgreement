@@ -18,8 +18,7 @@ public class DeudorDTO {
 	private String dv;
 	private String razonSocial;
 	private String direccion;
-	@Getter
-	private List<ContactoDTO> contactoDeduor;
+	private List<ContactoDTO> contactoDeudor;
 	private String condicionPago;
 	private boolean avanzarJuntos;
 	private String formaDePago;
@@ -30,11 +29,11 @@ public class DeudorDTO {
 	private LocalDate fecha;
 
 	public void addContactoDeudor(ContactoDTO con) {
-		if (this.contactoDeduor == null) {
-			this.contactoDeduor = new ArrayList<ContactoDTO>();
+		if (this.contactoDeudor == null) {
+			this.contactoDeudor = new ArrayList<ContactoDTO>();
 		}
 
-		this.contactoDeduor.add(con);
+		this.contactoDeudor.add(con);
 
 	}
 
@@ -53,7 +52,7 @@ public class DeudorDTO {
 		detalleOtroCondicion = deu.getDetalleOtroCondicion();
 		informacionAdicional = deu.getInformacionAdicional();
 
-		contactoDeduor =  deu.getAgregarEliminar().stream()
+		contactoDeudor =  deu.getAgregarEliminar().stream()
 				.map(m -> ContactoDTO.builder().correo(m.getCorreo()).direccion(m.getDireccion()).estado(m.getEstado())
 						.nombre(m.getNombre()).telefono(m.getTelefono()).build()).collect(Collectors.toList());
 
@@ -61,11 +60,11 @@ public class DeudorDTO {
 	}
 
 
-	public void setContactoDeduor(List<ContactoDTO> contactoDeduor) {
-		if (contactoDeduor == null) {
-			this.contactoDeduor = new ArrayList<>();
+	public void setContactoDeudor(List<ContactoDTO> contactoDeudor) {
+		if (contactoDeudor == null) {
+			this.contactoDeudor = new ArrayList<>();
 		} else {
-			this.contactoDeduor = contactoDeduor;
+			this.contactoDeudor = contactoDeudor;
 		}
 	}
 }

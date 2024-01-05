@@ -15,7 +15,6 @@ public class RutConHash {
 
 	@Id
 	private String id;
-
 	private String rut;
 	private String rutHash;
 

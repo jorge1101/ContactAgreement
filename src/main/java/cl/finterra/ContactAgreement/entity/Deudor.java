@@ -49,20 +49,20 @@ public class Deudor {
 	private LocalDate fecha;
 
 
-	@Field("agregarEliminar")
-	public List<AgregarEliminar> agregarEliminar;
+	@Field("contacto")
+	public List<Contacto> agregarEliminar;
 
-	public void addAgregarEliminar(AgregarEliminar item) {
+	public void addAgregarEliminar(Contacto item) {
 		if(agregarEliminar == null) {
-			agregarEliminar = new ArrayList<AgregarEliminar>();
+			agregarEliminar = new ArrayList<Contacto>();
 		}
 
 		agregarEliminar.add(item);
 	}
 
-	public void addAllAgregarEliminar(List<AgregarEliminar> items) {
+	public void addAllAgregarEliminar(List<Contacto> items) {
 		if(agregarEliminar == null) {
-			agregarEliminar = new ArrayList<AgregarEliminar>();
+			agregarEliminar = new ArrayList<Contacto>();
 		}
 
 		agregarEliminar.addAll(items);

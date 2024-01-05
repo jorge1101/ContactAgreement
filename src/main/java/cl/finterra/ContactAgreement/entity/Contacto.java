@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-@Document(collection = "agregar_eliminar")
-public class AgregarEliminar {
+@Document(collection = "contacto")
+public class Contacto {
 
 	@Id
 	private String id;
@@ -26,4 +26,5 @@ public class AgregarEliminar {
 	private String cargo;
 	private String direccion;
 	private String estado;
+	private String ContactoDeudor;
 }

@@ -78,6 +78,8 @@ public class SecurityConfig {
 //        return (web) -> web.ignoring().requestMatchers(
 //                "/usuario/login",
 //                "/usuario/encontrar-usuario",
+//                "/*",
+//                "/**",
 //                "/usuario/{email}/actualizar-contrasena"
 //        );
 //    }
