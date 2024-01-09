@@ -1,5 +1,6 @@
 package cl.finterra.ContactAgreement.correo;
 
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,17 @@ public class ConfigurarCorreo {
 
 
 	public JavaMailSender emailSender;
-
+//public void sendEmail(String toEmail,
+//					  String subject,
+//					  String body){
+//	SimpleMailMessage message=new SimpleMailMessage();
+//	message.setFrom("jor.fernandezj@duocuc.cl");
+//	message.setTo(toEmail);
+//	message.setText(body);
+//	message.setSubject(subject);
+//	emailSender.send(message);
+//	System.out.println("Mail sent 👌");
+//}
 	public void enviar(DeudorDTO deu) throws MessagingException {
 
 		StringBuilder body = new StringBuilder();

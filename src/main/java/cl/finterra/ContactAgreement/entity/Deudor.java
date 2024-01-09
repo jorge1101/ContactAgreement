@@ -44,7 +44,7 @@ public class Deudor {
 	private String condicionAcepacion;
 	@NotBlank(message = "El campo detalleOtroCondicion no puede estar en blanco")
 	private String detalleOtroCondicion;
-	@Size(max = 600, message = "El campo informacionAdicional debe tener como máximo {max} caracteres")
+	@Size(max = 1000, message = "El campo informacionAdicional debe tener como máximo {max} caracteres")
 	private String informacionAdicional;
 	private LocalDate fecha;
 
@@ -67,4 +67,6 @@ public class Deudor {
 
 		agregarEliminar.addAll(items);
 	}
+
+
 }

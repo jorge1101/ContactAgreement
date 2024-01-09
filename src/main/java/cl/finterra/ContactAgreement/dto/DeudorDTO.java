@@ -1,11 +1,13 @@
 package cl.finterra.ContactAgreement.dto;
 
+import cl.finterra.ContactAgreement.entity.Contacto;
 import cl.finterra.ContactAgreement.entity.Deudor;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -28,13 +30,15 @@ public class DeudorDTO {
 	private String informacionAdicional;
 	private LocalDate fecha;
 
+	public DeudorDTO(Contacto m) {
+	}
+
 	public void addContactoDeudor(ContactoDTO con) {
 		if (this.contactoDeudor == null) {
 			this.contactoDeudor = new ArrayList<ContactoDTO>();
 		}
 
 		this.contactoDeudor.add(con);
-
 	}
 
 	public DeudorDTO(Deudor deu) {
@@ -67,4 +71,7 @@ public class DeudorDTO {
 			this.contactoDeudor = contactoDeudor;
 		}
 	}
+
+
+
 }

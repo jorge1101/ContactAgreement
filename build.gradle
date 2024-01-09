@@ -31,6 +31,7 @@ dependencies {
 	implementation group: 'org.mongodb', name: 'mongodb-driver-sync', version: '4.11.1'
 	implementation 'javax.validation:validation-api:2.0.1.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'javax.persistence:javax.persistence-api:2.2'
 	implementation 'io.jsonwebtoken:jjwt-root:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'

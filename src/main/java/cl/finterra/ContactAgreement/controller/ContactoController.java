@@ -2,9 +2,15 @@ package cl.finterra.ContactAgreement.controller;
 
 import cl.finterra.ContactAgreement.dao.ContactoMongoDAO;
 import cl.finterra.ContactAgreement.dao.UsuarioMongoDAO;
+import cl.finterra.ContactAgreement.dto.ContactoDTO;
+import cl.finterra.ContactAgreement.dto.DeudorDTO;
 import cl.finterra.ContactAgreement.entity.Contacto;
+import cl.finterra.ContactAgreement.entity.Deudor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ContactoController {
@@ -31,7 +37,11 @@ public class ContactoController {
     }
 
     public String getCorreo() {
-        return null;
+
+            List<Contacto> tem = this.agregarEliminarMongoDAO.findAll();
+            tem.forEach(f -> f.getAgregarEliminar().size());
+            return tem.stream().map(m -> new ContactoDTO(m)).collect(Collectors.toList()).toString();
+
     }
 
     public void deleteById(String id) {

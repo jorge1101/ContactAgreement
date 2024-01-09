@@ -42,7 +42,8 @@ public class SecurityConfig {
                                          "/deudor",
                                          "/version",
                                          "/version/correo",
-                                         "/actualiza-rut-deudor").permitAll()
+                                         "/actualiza-rut-deudor",
+                                         "/**").permitAll()
                         .anyRequest().authenticated()
                 ).httpBasic(AbstractHttpConfigurer::disable);
         return http.build();

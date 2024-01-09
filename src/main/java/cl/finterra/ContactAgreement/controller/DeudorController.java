@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 
+import cl.finterra.ContactAgreement.dao.ContactoMongoDAO;
 import jakarta.mail.MessagingException;
 //import jakarta.transaction.Transactional;
 
@@ -34,6 +36,53 @@ public class DeudorController {
 	DeudorMongoDAO deudorMongoDAO;
 	@Autowired
 	ConfigurarCorreo correo;
+	@Autowired
+	ContactoMongoDAO contactoMongoDAO;
+	public void actualizarContacto(String id, ContactoDTO contactoDTO) {
+		Optional<Contacto> deudorOptional = contactoMongoDAO.findById(id);
+
+		if (deudorOptional.isPresent()) {
+			Contacto contacto = deudorOptional.get();
+			// Aquí deberías implementar la lógica para encontrar y actualizar el contacto en la lista
+			// Puedes buscar el contacto por su ID y luego actualizar sus campos con los valores de contactoDTO
+			// ...
+
+
+			contactoMongoDAO.save(contacto);
+		} else {
+			throw new EntityNotFoundException("No se encontró un deudor con el ID proporcionado");
+		}
+	}
+
+	public void agregarContacto(String id, ContactoDTO contactoDTO) {
+		Optional<Contacto> deudorOptional = contactoMongoDAO.findById(id);
+
+		if (deudorOptional.isPresent()) {
+			Contacto deudor = deudorOptional.get();
+
+			// Aquí deberías validar lógica de negocio antes de agregar el contacto
+
+			// Crear el contacto y agregarlo al deudor
+			Contacto nuevoContacto = new Contacto(contactoDTO.getNombre(), contactoDTO.getCorreo());
+
+			contactoMongoDAO.save(nuevoContacto);
+		} else {
+			throw new EntityNotFoundException("No se encontró un deudor con el ID proporcionado");
+		}
+	}
+
+	public void eliminarContacto(String id, Long contactoId) {
+		Optional<Contacto> contactoOptional = contactoMongoDAO.findById(id);
+
+
+		if (contactoOptional.isPresent()) {
+			Contacto contacto = contactoOptional.get();
+
+			contactoMongoDAO.save(contacto);
+		} else {
+			throw new EntityNotFoundException("No se encontró un deudor con el ID proporcionado");
+		}
+	}
 
 
 	public DeudorDTO buscarDeudor(String rutHash) {
@@ -135,5 +184,9 @@ public class DeudorController {
 		tem.forEach(f -> f.getAgregarEliminar().size());
 		return tem.stream().map(m -> new DeudorDTO(m)).collect(Collectors.toList());
 	}
+
+
+
+
 
 }

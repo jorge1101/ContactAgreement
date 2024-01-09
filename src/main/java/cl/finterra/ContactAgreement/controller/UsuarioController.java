@@ -9,16 +9,13 @@ import java.util.Optional;
 @NoArgsConstructor
 @Service
 public class UsuarioController {
-
 	@Autowired
 	UsuarioMongoDAO userDao;
-
 	public Optional<Usuario> login(Usuario user) {
-
 		System.out.println(user.getEmail());
 
-		Optional<Usuario> tem = userDao.findByEmail(user.getEmail());
-//		Optional<Usuario> temo = userDao.findByRut(user.getRut());
+//		Optional<Usuario> tem = userDao.findByEmail(user.getEmail());
+		Optional<Usuario> tem = userDao.findByRut(user.getRut());
 //		if (tem.isPresent() || temo.isPresent()) {
 		if (tem.isPresent() ) {
 			// Verificar las contraseñas y realizar tu lógica
@@ -27,10 +24,6 @@ public class UsuarioController {
 				return tem.isPresent() ? tem : tem;
 			}
 		}
-
 		return Optional.empty();
 	}
-
-
-
 }

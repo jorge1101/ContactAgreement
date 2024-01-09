@@ -26,9 +26,8 @@ public class ActualizarRutConHashController {
 //		home.conect();
 		tem = home.getRutClienteDeudor();
 //			home.close();
-
 //				catch (SQLException e) {
-////			home.close();
+//			home.close();
 //			e.printStackTrace();
 //		}
 		System.out.println("total de home " + tem.size()  );
