@@ -1,23 +1,29 @@
 package cl.finterra.ContactAgreement.rest;
 
+import ch.qos.logback.core.boolex.Matcher;
+import ch.qos.logback.core.net.SMTPAppenderBase;
 import cl.finterra.ContactAgreement.Security.JwtTokenProvider;
 import cl.finterra.ContactAgreement.controller.UsuarioController;
 import cl.finterra.ContactAgreement.dao.UsuarioMongoDAO;
 import cl.finterra.ContactAgreement.entity.Usuario;
+import com.fasterxml.jackson.annotation.JacksonInject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import cl.finterra.ContactAgreement.dto.UsuarioDTO;
 import javax.validation.Valid;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import cl.finterra.ContactAgreement.entity.Usuario;
 @RestController
 @RequestMapping("usuario")
 public class UsuarioRest {
@@ -25,6 +31,9 @@ public class UsuarioRest {
 	UsuarioController userController;
 	@Autowired
 	private UsuarioMongoDAO userDao;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	private final JwtTokenProvider tokenProvider;
 	public UsuarioRest(JwtTokenProvider tokenProvider) {
 		this.tokenProvider = tokenProvider;
@@ -42,32 +51,52 @@ public class UsuarioRest {
 			}
 			return ResponseEntity.badRequest().body(errorMessage.toString());
 		}
-		System.out.println("Login: " + usuario);
-		Optional<Usuario> authenticatedUser = userController.login(usuario);
-		if (authenticatedUser.isPresent()) {
+//		Optional<Usuario> authenticatedUser = userController.login(usuario);
+		// Buscar el usuario en la base de datos por su rut
+
+		Optional<Usuario> authenticatedUser = userDao.findByRut(usuario.getRut());
+		System.out.println("usuario password sin crypt: "+usuario.getPassword());
+		System.out.println("usuario password con crypt: "+authenticatedUser.get().getPassword());
+		String password = usuario.getPassword();
+
+
+
+		// Hashear la contraseña
+		usuario.setNuevaContrasena(authenticatedUser.get().getPassword());
+
+		if (authenticatedUser.isPresent() && passwordEncoder.matches(usuario.getPassword(), authenticatedUser.get().getPassword())) {
 			String accessToken = tokenProvider.generateAccessToken(usuario.getEmail());
 			authenticatedUser.get().setAccessToken(accessToken);
-			System.out.println("AccessToken: " + accessToken);
-			// Devolver el objeto Usuario modificado en la respuesta
 			return ResponseEntity.ok(authenticatedUser.get());
 		} else {
-			// Devolver un objeto Usuario vacío o con datos predeterminados en caso de fallo de autenticación
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Usuario());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
 		}
+
+	}
+
+	@Autowired
+	private UsuarioMongoDAO usuarioRepository;
+
+	public void cambiarContrasena(Usuario usuario, String nuevaContrasena, BindingResult result) {
+		// Validar la nueva contraseña
+		validatePassword(nuevaContrasena, result);
+
+		// Obtener el usuario de la base de datos
+		Usuario usuarioEnDB = usuarioRepository.findById(usuario.getId()).orElse(null);
+
+		// Verificar si la nueva contraseña es igual a la contraseña actual
+		if (usuarioEnDB != null && nuevaContrasena.equals(usuarioEnDB.getPassword())) {
+			result.addError(new FieldError("Usuario", "password", "La nueva contraseña no puede ser igual a la contraseña actual"));
+		}
+
+		// Continuar con el resto de la lógica de cambio de contraseña si es necesario
 	}
 
 	private void validatePassword(String password, BindingResult result) {
-
-		if (!password.matches("(.*[0-9]){2,}.*") || !password.contains(".") || !password.matches(".*[A-Z].*" ) || !password.matches(".*[a-z].*")) {
+		// Realizar tus otras validaciones aquí
+		if (!password.matches("(.*[0-9]){2,}.*") || !password.contains(".") || !password.matches(".*[A-Z].*") || !password.matches(".*[a-z].*")) {
 			result.addError(new FieldError("Usuario", "password", "La contraseña no cumple con los requisitos mínimos"));
 		}
-
-
-//		// Verificar si la nueva contraseña es igual a la actual
-//		if (newPassword.equals(currentPassword)) {
-//			result.addError(new FieldError("Usuario", "password", "La nueva contraseña no puede ser igual a la actual"));
-//		}
-
 	}
 
 	// Método para obtener detalles de errores de validación
@@ -121,8 +150,11 @@ public class UsuarioRest {
 			return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
 		}
 
+		if (passwordEncoder.matches(usuarioConNuevaContrasena.getPassword(), usuarioConNuevaContrasena.getNuevaContrasena())) {
+			String nuevaContrasenaCifrada = passwordEncoder.encode(usuarioConNuevaContrasena.getNuevaContrasena());
+			usuarioConNuevaContrasena.setPassword(nuevaContrasenaCifrada);
+		}
 		// Realizar validaciones personalizadas
-// Dentro de tu método donde realizas la validación
 		validatePassword(usuarioConNuevaContrasena.getPassword(), result);
 
 		// Verificar si hay errores de validación
@@ -131,7 +163,7 @@ public class UsuarioRest {
 		}
 
 		// Obtener el usuario existente por correo electrónico
-		Usuario usuarioExistente = userDao.findByRut(email).orElse(null);
+		Usuario usuarioExistente = userDao.findByEmail(email).orElse(null);
 
 		if (usuarioExistente != null) {
 			// Actualizar la contraseña
@@ -145,8 +177,6 @@ public class UsuarioRest {
 			return new ResponseEntity<>("Error interno del servidor", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-
 
 
 

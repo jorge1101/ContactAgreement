@@ -4,6 +4,9 @@ import cl.finterra.ContactAgreement.dao.UsuarioMongoDAO;
 import cl.finterra.ContactAgreement.entity.Usuario;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 @NoArgsConstructor
@@ -11,6 +14,7 @@ import java.util.Optional;
 public class UsuarioController {
 	@Autowired
 	UsuarioMongoDAO userDao;
+
 	public Optional<Usuario> login(Usuario user) {
 		System.out.println(user.getEmail());
 

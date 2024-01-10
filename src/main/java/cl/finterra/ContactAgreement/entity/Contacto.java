@@ -27,26 +27,17 @@ public class Contacto {
 	@NotNull
 	@PastOrPresent
 	private LocalDate fecha;
-
 	@NotBlank
 	private String nombre;
-
 	@NotBlank
 	@Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "Correo inválido")
 	private String correo;
-
-	@NotBlank(message = "Teléfono no puede estar en blanco")
 	@Pattern(regexp = "9\\d{8}", message = "Teléfono inválido, debe comenzar con 9 y tener 9 números")
 	private String telefono;
-
 	private String cargo;
-
-	@NotBlank
 	private String direccion;
-
 	@NotBlank
 	private String estado;
-
 	private String ContactoDeudor;
 
 	public Contacto(String nombre, String correo) {
