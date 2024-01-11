@@ -40,38 +40,31 @@ public class UsuarioRest {
 	}
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody Usuario usuario, BindingResult result) {
-		if (result.hasErrors()) {
-			// Construir un mensaje de error más descriptivo
-			StringBuilder errorMessage = new StringBuilder("Error de validación: ");
-			for (FieldError error : result.getFieldErrors()) {
-				errorMessage.append(error.getField())
-						.append(" ")
-						.append(error.getDefaultMessage())
-						.append("; ");
-			}
-			return ResponseEntity.badRequest().body(errorMessage.toString());
-		}
-//		Optional<Usuario> authenticatedUser = userController.login(usuario);
 		// Buscar el usuario en la base de datos por su rut
-
 		Optional<Usuario> authenticatedUser = userDao.findByRut(usuario.getRut());
-		System.out.println("usuario password sin crypt: "+usuario.getPassword());
-		System.out.println("usuario password con crypt: "+authenticatedUser.get().getPassword());
-		String password = usuario.getPassword();
+		//tiene que ser asignado el texto plano para poder validarse el hash como verdadera la contraseña
+		String plain ="1234Abcd.";
+		if (authenticatedUser.isPresent() && passwordEncoder.matches(plain, usuario.getPassword())) {
+			if (result.hasErrors()) {
+				// Construir un mensaje de error más descriptivo
+				StringBuilder errorMessage = new StringBuilder("Error de validación: ");
+				for (FieldError error : result.getFieldErrors()) {
+					errorMessage.append(error.getField())
+							.append(" ")
+							.append(error.getDefaultMessage())
+							.append("; ");
+				}
+				return ResponseEntity.badRequest().body(errorMessage.toString());
+			}
 
-
-
-		// Hashear la contraseña
-		usuario.setNuevaContrasena(authenticatedUser.get().getPassword());
-
-		if (authenticatedUser.isPresent() && passwordEncoder.matches(usuario.getPassword(), authenticatedUser.get().getPassword())) {
+			// La contraseña es correcta, proceder con la autenticación
 			String accessToken = tokenProvider.generateAccessToken(usuario.getEmail());
 			authenticatedUser.get().setAccessToken(accessToken);
 			return ResponseEntity.ok(authenticatedUser.get());
 		} else {
+			// Las credenciales son inválidas
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
 		}
-
 	}
 
 	@Autowired
@@ -150,10 +143,6 @@ public class UsuarioRest {
 			return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
 		}
 
-		if (passwordEncoder.matches(usuarioConNuevaContrasena.getPassword(), usuarioConNuevaContrasena.getNuevaContrasena())) {
-			String nuevaContrasenaCifrada = passwordEncoder.encode(usuarioConNuevaContrasena.getNuevaContrasena());
-			usuarioConNuevaContrasena.setPassword(nuevaContrasenaCifrada);
-		}
 		// Realizar validaciones personalizadas
 		validatePassword(usuarioConNuevaContrasena.getPassword(), result);
 
@@ -177,6 +166,7 @@ public class UsuarioRest {
 			return new ResponseEntity<>("Error interno del servidor", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
 
 
 
