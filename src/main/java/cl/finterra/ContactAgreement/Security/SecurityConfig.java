@@ -15,11 +15,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -40,15 +42,25 @@ public class SecurityConfig {
         http
                 //configuraciones de seguridad
                 .formLogin(AbstractHttpConfigurer::disable)
-                .requestCache(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
+//                .requestCache(AbstractHttpConfigurer::disable)
+//                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .cors(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Sesiones sin estado para APIs REST
+                        .invalidSessionUrl("/admin")
+                        .maximumSessions(1) //maximo de sesiones
+                        .expiredUrl("/admin") //url para sesion expirada
+                        .maxSessionsPreventsLogin(true)
                 )
                 .logout(logout -> logout
+                        .logoutSuccessUrl("/admin")
                         .invalidateHttpSession(true) // Invalida la sesión al cerrar sesión
                         .deleteCookies("JSESSIONID") // Elimina cookies al cerrar sesión
+                )
+                .exceptionHandling( exception -> exception
+                        .accessDeniedHandler(new myAccessDeniedHandler())
+                        .authenticationEntryPoint(new myAuthenticationEntryPoint())
                 )
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/usuario/login",
