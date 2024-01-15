@@ -1,8 +1,10 @@
 package cl.finterra.ContactAgreement.rest;
 
+import java.util.logging.Logger;
 import ch.qos.logback.core.boolex.Matcher;
 import ch.qos.logback.core.net.SMTPAppenderBase;
 import cl.finterra.ContactAgreement.Security.JwtTokenProvider;
+import cl.finterra.ContactAgreement.Security.SecurityConfig;
 import cl.finterra.ContactAgreement.controller.UsuarioController;
 import cl.finterra.ContactAgreement.dao.UsuarioMongoDAO;
 import cl.finterra.ContactAgreement.entity.Usuario;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +36,7 @@ public class UsuarioRest {
 	private UsuarioMongoDAO userDao;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	private static final Logger LOGGER = Logger.getLogger(UsuarioRest.class.getName());
 
 	private final JwtTokenProvider tokenProvider;
 	public UsuarioRest(JwtTokenProvider tokenProvider) {
@@ -42,11 +46,16 @@ public class UsuarioRest {
 	public ResponseEntity<?> login(@Valid @RequestBody Usuario usuario, BindingResult result) {
 		// Buscar el usuario en la base de datos por su rut
 		Optional<Usuario> authenticatedUser = userDao.findByRut(usuario.getRut());
-		//tiene que ser asignado el texto plano para poder validarse el hash como verdadera la contraseña
-		String plain ="1234Abcd.";
-		if (authenticatedUser.isPresent() && passwordEncoder.matches(plain, usuario.getPassword())) {
-			if (result.hasErrors()) {
-				// Construir un mensaje de error más descriptivo
+
+//		String plain ="1234Abcd.";  // Password plana en caso de necesitar usarse (no creeo)
+//		System.out.println("pass plain "+plain);
+//		System.out.println("pass plainPass "+usuario.getPassword());
+//		System.out.println("pass get "+usuario.getPassword());
+//		System.out.println("pass get newpass "+usuario.getNuevaContrasena());
+
+		// validacion si el usuario existe y la contraseña es correcta validada mediante hashing de spring BCrypt
+		if (authenticatedUser.isPresent() && passwordEncoder.matches(usuario.getPassword(), authenticatedUser.get().getPassword())) {
+			if (result.hasErrors()) { //si hay errores
 				StringBuilder errorMessage = new StringBuilder("Error de validación: ");
 				for (FieldError error : result.getFieldErrors()) {
 					errorMessage.append(error.getField())
@@ -62,8 +71,9 @@ public class UsuarioRest {
 			authenticatedUser.get().setAccessToken(accessToken);
 			return ResponseEntity.ok(authenticatedUser.get());
 		} else {
-			// Las credenciales son inválidas
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+			String errorMessage = "Credenciales inválidas. Usuario o contraseña incorrectos.";
+			LOGGER.warning("Intento de inicio de sesión fallido para el usuario con el rut: " + usuario.getRut() + ". " + errorMessage);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMessage);
 		}
 	}
 
@@ -86,7 +96,7 @@ public class UsuarioRest {
 	}
 
 	private void validatePassword(String password, BindingResult result) {
-		// Realizar tus otras validaciones aquí
+		// validaciones para que contenga los caracteres necesarios
 		if (!password.matches("(.*[0-9]){2,}.*") || !password.contains(".") || !password.matches(".*[A-Z].*") || !password.matches(".*[a-z].*")) {
 			result.addError(new FieldError("Usuario", "password", "La contraseña no cumple con los requisitos mínimos"));
 		}
@@ -155,8 +165,11 @@ public class UsuarioRest {
 		Usuario usuarioExistente = userDao.findByEmail(email).orElse(null);
 
 		if (usuarioExistente != null) {
-			// Actualizar la contraseña
-			usuarioExistente.setPassword(usuarioConNuevaContrasena.getPassword());
+			// Actualizar la contraseña utilizando la nueva contraseña encriptada
+			usuarioExistente.setPassword(passwordEncoder.encode(usuarioConNuevaContrasena.getPassword()));
+
+			// No es necesario almacenar la nueva contraseña sin encriptar en el usuario
+			// usuarioExistente.setNuevaContrasena(usuarioConNuevaContrasena.getPassword());
 
 			// Guardar el usuario actualizado
 			Usuario usuarioActualizado = userDao.save(usuarioExistente);
@@ -166,8 +179,5 @@ public class UsuarioRest {
 			return new ResponseEntity<>("Error interno del servidor", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-
-
 
 }

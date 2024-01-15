@@ -34,18 +34,10 @@ public class Usuario {
 	private String name;
 	private String accessToken;
 	private String rut;
-	@Getter
-	private String nuevaContrasena;
+//	@Getter
+//	private String nuevaContrasena;
+	private String plainPassword;
 
-	public static PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 
-	public void setPassword(String password) {
-		// Aplicar el hash a la contraseña y almacenarla
-		this.password = passwordEncoder().encode(password);
-	}
-	public void setNuevaContrasena(String nuevaContrasena) {
-		this.nuevaContrasena = passwordEncoder().encode(nuevaContrasena);
-	}
+
 }

@@ -27,6 +27,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+//	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'commons-codec:commons-codec:1.15'
 	implementation group: 'org.mongodb', name: 'mongodb-driver-sync', version: '4.11.1'
 	implementation 'javax.validation:validation-api:2.0.1.Final'

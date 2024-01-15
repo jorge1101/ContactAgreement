@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioDTO {
-
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "El email debe ser válido")
     private String email;
