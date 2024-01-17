@@ -26,17 +26,13 @@ public class DeudorRest {
 	}
 
 	@PostMapping
-	public ResponseEntity<String> guardar(@RequestBody DeudorDTO deu) {
-		// Verificación si los datos son nulos
-		if (deu == null) {
+	public void guardar(@RequestBody DeudorDTO deu) {
+		// verificacion si los datos son nulos
+		if(deu == null) {
 			throw new Error();
 		}
-
-		// Si no es nulo guarda los datos
+		//si no es nulo entonces guarda los datos
 		deudorController.guardar(deu);
-
-		// Retorna un } mensaje adicional
-		return ResponseEntity.ok("Guardado correctamente");
 	}
 	
 	@GetMapping

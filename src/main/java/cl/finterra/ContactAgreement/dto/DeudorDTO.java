@@ -70,7 +70,7 @@ contactDeudor
 		additionalInformation = deu.getAdditionalInformation();
 
 		contactDeudor =  deu.getAgregarEliminar().stream()
-				.map(m -> ContactoDTO.builder().email(m.getEmail()).address(m.getAddress()).state(m.getState())
+				.map(m -> ContactoDTO.builder().email(m.getEmail()).state(m.getState())
 						.name(m.getName()).phone(m.getPhone()).build()).collect(Collectors.toList());
 
 
