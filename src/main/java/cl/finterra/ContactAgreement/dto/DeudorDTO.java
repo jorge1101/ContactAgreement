@@ -7,7 +7,6 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -18,57 +17,71 @@ public class DeudorDTO {
 
 	private String rut;
 	private String dv;
-	private String razonSocial;
-	private String direccion;
-	private List<ContactoDTO> contactoDeudor;
-	private String condicionPago;
+	private String companyName;
+	private String address;
+	private List<ContactoDTO> contactDeudor;
+	private String paymentCondition;
 	private boolean avanzarJuntos;
-	private String formaDePago;
-	private String detalleOtro;
-	private String condicionAcepacion;
-	private String detalleOtroCondicion;
-	private String informacionAdicional;
-	private LocalDate fecha;
+	private String paymentMethod;
+	private String detailOther;
+	private String acceptanceCondition;
+	private String detailOtherCondition;
+	private String additionalInformation;
+	private LocalDate date;
 
 	public DeudorDTO(Contacto m) {
 	}
 
 	public void addContactoDeudor(ContactoDTO con) {
-		if (this.contactoDeudor == null) {
-			this.contactoDeudor = new ArrayList<ContactoDTO>();
+		if (this.contactDeudor == null) {
+			this.contactDeudor = new ArrayList<ContactoDTO>();
 		}
 
-		this.contactoDeudor.add(con);
+		this.contactDeudor.add(con);
 	}
 
 	public DeudorDTO(Deudor deu) {
-		
-		fecha = deu.getFecha();
+		/*
+paymentMethod
+paymentCondition
+detailOther
+detailOtherCondition
+avanzarJuntos
+acceptanceCondition
+additionalInformation
+contactDeudor
+    name
+    email
+    phone
+    state
+		*/
+      //modificar nombres para que coincidan con el front, tambien desde el resto de usos de la funcion
+		date = deu.getDate();
 		rut = deu.getRut();
 		dv = deu.getDv();
-		razonSocial = deu.getNombre();
-		direccion = deu.getDireccion();
-		condicionPago = deu.getCondicionPago();
-		avanzarJuntos = deu.isContactarAvanzarJuntos();
-		formaDePago = deu.getFormaDepago();
-		detalleOtro = deu.getDetalleOtro();
-		condicionAcepacion = deu.getCondicionAcepacion();
-		detalleOtroCondicion = deu.getDetalleOtroCondicion();
-		informacionAdicional = deu.getInformacionAdicional();
+		companyName = deu.getCompanyName();
+		address = deu.getAddress();
+		paymentCondition = deu.getPaymentCondition();//paymentCondition
+		avanzarJuntos = deu.isAvanzarJuntos();
+		paymentMethod = deu.getPaymentMethod();
+		detailOther = deu.getDetailOther();
+		acceptanceCondition = deu.getAcceptanceCondition();
+		detailOtherCondition = deu.getDetailOtherCondition();
+		additionalInformation = deu.getAdditionalInformation();
 
-		contactoDeudor =  deu.getAgregarEliminar().stream()
-				.map(m -> ContactoDTO.builder().correo(m.getCorreo()).direccion(m.getDireccion()).estado(m.getEstado())
-						.nombre(m.getNombre()).telefono(m.getTelefono()).build()).collect(Collectors.toList());
+		contactDeudor =  deu.getAgregarEliminar().stream()
+				.map(m -> ContactoDTO.builder().email(m.getEmail()).address(m.getAddress()).state(m.getState())
+						.name(m.getName()).phone(m.getPhone()).build()).collect(Collectors.toList());
 
 
 	}
 
 
-	public void setContactoDeudor(List<ContactoDTO> contactoDeudor) {
-		if (contactoDeudor == null) {
-			this.contactoDeudor = new ArrayList<>();
+	public void setContactDeudor(List<ContactoDTO> contactDeudor) {
+		if (contactDeudor == null) {
+			this.contactDeudor = new ArrayList<>();
 		} else {
-			this.contactoDeudor = contactoDeudor;
+			this.contactDeudor = contactDeudor;
 		}
 	}
 

@@ -1,12 +1,7 @@
 package cl.finterra.ContactAgreement.dto;
 
-import cl.finterra.ContactAgreement.controller.ContactoController;
 import cl.finterra.ContactAgreement.entity.Contacto;
-import cl.finterra.ContactAgreement.entity.Deudor;
 import lombok.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -14,22 +9,22 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class ContactoDTO {
     @Getter
-	private String nombre;
+	private String name;
 	@Getter
-	private String correo;
+	private String email;
 	@Getter
-	private String telefono;
+	private String phone;
 	@Getter
-	private String direccion;
+	private String address;
 	@Getter
-	private String estado;
+	private String state;
 
 	public ContactoDTO(Contacto con) {
-		nombre = con.getNombre();
-		correo = con.getCorreo();
-		telefono = con.getTelefono();
-		direccion = con.getDireccion();
-		estado = con.getEstado();
+		name = con.getName();
+		email = con.getEmail();
+		phone = con.getPhone();
+		address = con.getAddress();
+		state = con.getState();
 
 //		contactoDeudor =  con.getAgregarEliminar().stream()
 //				.map(m -> ContactoDTO.builder().correo(m.getCorreo()).direccion(m.getDireccion()).estado(m.getEstado())

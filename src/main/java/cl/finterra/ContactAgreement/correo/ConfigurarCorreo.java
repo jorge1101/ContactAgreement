@@ -1,6 +1,5 @@
 package cl.finterra.ContactAgreement.correo;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -30,12 +29,12 @@ public class ConfigurarCorreo {
 		StringBuilder body = new StringBuilder();
 
 		body.append("<h3>Reporte de registro de pagadores </h3>");
-		body.append("<p>Nombre: " + deu.getRazonSocial() + " </p>");
+		body.append("<p>Nombre: " + deu.getCompanyName() + " </p>");
 		body.append("<p>Rut: " + deu.getRut() + "-" + deu.getDv() + " </p>");
-		body.append("<p>Condicion Acepacion: " + deu.getCondicionAcepacion() + " </p>");
-		body.append("<p>Condicion de Pago: " + deu.getCondicionPago() + " </p>");
-		body.append("<p>Forma de Pago: " + deu.getFormaDePago() + " </p>");
-		body.append("<p>Informacion Adicional: " + deu.getInformacionAdicional() + " </p>");
+		body.append("<p>Condicion Acepacion: " + deu.getAcceptanceCondition() + " </p>");
+		body.append("<p>Condicion de Pago: " + deu.getPaymentCondition() + " </p>");
+		body.append("<p>Forma de Pago: " + deu.getPaymentMethod() + " </p>");
+		body.append("<p>Informacion Adicional: " + deu.getAdditionalInformation() + " </p>");
 
 		MimeMessage mimeMessage = emailSender.createMimeMessage();
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");

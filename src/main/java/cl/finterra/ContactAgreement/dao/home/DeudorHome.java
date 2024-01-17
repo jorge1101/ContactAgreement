@@ -45,15 +45,15 @@ public class DeudorHome {
 			while (cursor.hasNext()) {
 				Document contactDoc = cursor.next();
 				ContactoDTO tem = ContactoDTO.builder()
-						.correo(contactDoc.getString("cde_mail"))
-						.telefono(contactDoc.getString("cde_fono"))
-						.direccion(contactDoc.getString("cde_dir"))
-						.nombre(contactDoc.getString("cde_nombre")).build();
+						.email(contactDoc.getString("cde_mail"))
+						.phone(contactDoc.getString("cde_fono"))
+						.address(contactDoc.getString("cde_dir"))
+						.name(contactDoc.getString("cde_nombre")).build();
 				listContacto.add(tem);
 			}
 		}
 
-		doc.setContactoDeudor(listContacto);
+		doc.setContactDeudor(listContacto);
 		return doc;
 	}
 
@@ -67,7 +67,7 @@ public class DeudorHome {
 			if (cursor.hasNext()) {
 				Document result = cursor.next();
 				deu = new DeudorDTO();
-				deu.setDireccion(result.getString("CL_DIREC"));
+				deu.setAddress(result.getString("CL_DIREC"));
 				deu.setRut(rut);
 				deu.setDv(result.getString("CL_DIG"));
 
@@ -77,11 +77,11 @@ public class DeudorHome {
 
 				// Construir el nombre según CL_TIPPER
 				if ("N".equals(result.getString("CL_TIPPER"))) {
-					deu.setRazonSocial(apePat + " " + apeMat + " " + nombre);
+					deu.setCompanyName(apePat + " " + apeMat + " " + nombre);
 				} else if ("J".equals(result.getString("CL_TIPPER"))) {
-					deu.setRazonSocial(apePat + " " + apeMat + nombre);
+					deu.setCompanyName(apePat + " " + apeMat + nombre);
 				} else {
-					deu.setRazonSocial("Tipo No Válido");
+					deu.setCompanyName("Tipo No Válido");
 				}
 			}
 		}

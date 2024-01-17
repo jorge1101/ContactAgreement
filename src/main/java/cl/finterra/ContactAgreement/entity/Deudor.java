@@ -29,24 +29,24 @@ public class Deudor {
 	private String rut;
 	private String dv;
 	@NotBlank(message = "El campo nombre no puede estar en blanco")
-	private String nombre;
+	private String companyName;
 	@NotBlank(message = "El campo direccion no puede estar en blanco")
-	private String direccion;
+	private String address;
 	private String rutHash;
 	@NotBlank(message = "El campo formaDepago no puede estar en blanco")
-	private String formaDepago;
-	private String detalleOtro;
+	private String paymentMethod;
+	private String detailOther;
 	@NotBlank(message = "El campo condicionPago no puede estar en blanco")
-	private String condicionPago;
+	private String paymentCondition;
 	@NotNull(message = "El campo contactarAvanzarJuntos no puede ser nulo")
-	private boolean contactarAvanzarJuntos;
+	private boolean AvanzarJuntos;
 	@NotBlank(message = "El campo condicionAcepacion no puede estar en blanco")
-	private String condicionAcepacion;
+	private String acceptanceCondition;
 	@NotBlank(message = "El campo detalleOtroCondicion no puede estar en blanco")
-	private String detalleOtroCondicion;
+	private String detailOtherCondition;
 	@Size(max = 1000, message = "El campo informacionAdicional debe tener como máximo {max} caracteres")
-	private String informacionAdicional;
-	private LocalDate fecha;
+	private String additionalInformation;
+	private LocalDate date;
 
 
 	@Field("contacto")

@@ -24,7 +24,7 @@ public class VersionRest {
 	public ResponseEntity<String> login() {
 
 		DeudorDTO t = new DeudorDTO();
-		t.setRazonSocial("raxzon");
+		t.setCompanyName("raxzon");
 		t.setRut("34738467384");
 		t.setDv("7");//pendientes los comentados
 		try {
@@ -40,7 +40,7 @@ public class VersionRest {
 	@GetMapping(value = "correo")
 	public ResponseEntity<String> correo() {
 		DeudorDTO t = new DeudorDTO();
-		t.setRazonSocial("razon");
+		t.setCompanyName("razon");
 		t.setRut("34738467384");
 		t.setDv("7");
 	

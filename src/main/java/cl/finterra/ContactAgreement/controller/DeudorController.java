@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import cl.finterra.ContactAgreement.dao.ContactoMongoDAO;
-import jakarta.mail.MessagingException;
+import io.micrometer.common.util.StringUtils;
 //import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import cl.finterra.ContactAgreement.dto.ContactoDTO;
 import cl.finterra.ContactAgreement.dto.DeudorDTO;
 import cl.finterra.ContactAgreement.entity.Contacto;
 import cl.finterra.ContactAgreement.entity.Deudor;
-import cl.finterra.ContactAgreement.entity.RutConHash;
 
 import lombok.NoArgsConstructor;
 
@@ -38,6 +37,8 @@ public class DeudorController {
 	ConfigurarCorreo correo;
 	@Autowired
 	ContactoMongoDAO contactoMongoDAO;
+
+	private DeudorDTO deudorDTO;
 	public void actualizarContacto(String id, ContactoDTO contactoDTO) {
 		Optional<Contacto> deudorOptional = contactoMongoDAO.findById(id);
 
@@ -63,7 +64,7 @@ public class DeudorController {
 			// Aquí deberías validar lógica de negocio antes de agregar el contacto
 
 			// Crear el contacto y agregarlo al deudor
-			Contacto nuevoContacto = new Contacto(contactoDTO.getNombre(), contactoDTO.getCorreo());
+			Contacto nuevoContacto = new Contacto(contactoDTO.getName(), contactoDTO.getEmail());
 
 			contactoMongoDAO.save(nuevoContacto);
 		} else {
@@ -85,53 +86,50 @@ public class DeudorController {
 	}
 
 
-	public DeudorDTO buscarDeudor(String rutHash) {
-		
-		if(rutHash.equals("")) {	
+	public DeudorDTO buscarDeudor(String rut) {
+		// Validación para asegurar que el rut no sea nulo o vacío
+		if (StringUtils.isBlank(rut)) {
 			return null;
 		}
-	  Optional<RutConHash> tem = rutDao.findByRutHash(rutHash);
-	  
-	  if(!tem.isPresent()) {
-		  return null;
-	  }
-		
-		DeudorDTO salida = new DeudorDTO();
-		String rut = rutDao.findByRutHash(rutHash).get().getRut();
-		DeudorHome home = new DeudorHome();
 
-		salida = home.getDeudorContacto(rut);
-//			home.close();
-
-		Optional<Deudor> deu = deudorMongoDAO.findByRut(salida.getRut());
+		Optional<Deudor> deu = deudorMongoDAO.findByRut(rut);
 
 		if (deu.isPresent()) {
+			DeudorDTO salida = new DeudorDTO();
+			DeudorHome home = new DeudorHome();
+			salida = home.getDeudorContacto(rut);
 
-			salida.getContactoDeudor().removeIf(r -> deu.get().getAgregarEliminar().stream().anyMatch(a -> {
-				return (a.getNombre().equalsIgnoreCase(r.getNombre()) && a.getCorreo().equalsIgnoreCase(r.getCorreo())
-						&& a.getTelefono().equals(r.getTelefono()) && a.getDireccion().equals(r.getDireccion()));
-			}));
+			salida.getContactDeudor().removeIf(r -> deu.get().getAgregarEliminar().stream().anyMatch(a ->
+					a.getName().equalsIgnoreCase(r.getName()) &&
+							a.getEmail().equalsIgnoreCase(r.getEmail()) &&
+							a.getPhone().equals(r.getPhone()) &&
+							a.getAddress().equals(r.getAddress())
+			));
 
 			for (Contacto iterf : deu.get().getAgregarEliminar()) {
-
-				if(iterf.getEstado().equals("eliminar") || iterf.getEstado().equals("nuevo")) {
-					salida.addContactoDeudor(ContactoDTO.builder().nombre(iterf.getNombre()).correo(iterf.getCorreo())
-							.direccion(iterf.getDireccion()).estado(iterf.getEstado()).telefono(iterf.getTelefono())
+				if (iterf.getState().equals("eliminar") || iterf.getState().equals("nuevo")) {
+					salida.addContactoDeudor(ContactoDTO.builder()
+							.name(iterf.getName())
+							.email(iterf.getEmail())
+							.address(iterf.getAddress())
+							.state(iterf.getState())
+							.phone(iterf.getPhone())
 							.build());
 				}
 			}
 
-			salida.setAvanzarJuntos(deu.get().isContactarAvanzarJuntos());
-			salida.setCondicionPago(deu.get().getCondicionPago());
-			salida.setFormaDePago(deu.get().getFormaDepago());
-			salida.setDetalleOtro(deu.get().getDetalleOtro());
-			salida.setCondicionAcepacion(deu.get().getCondicionAcepacion());
-			salida.setDetalleOtroCondicion(deu.get().getDetalleOtroCondicion());
-			salida.setInformacionAdicional(deu.get().getInformacionAdicional());
+			salida.setAvanzarJuntos(deu.get().isAvanzarJuntos());
+			salida.setPaymentCondition(deu.get().getPaymentCondition());
+			salida.setPaymentMethod(deu.get().getPaymentMethod());
+			salida.setDetailOther(deu.get().getDetailOther());
+			salida.setAcceptanceCondition(deu.get().getAcceptanceCondition());
+			salida.setDetailOtherCondition(deu.get().getDetailOtherCondition());
+			salida.setAdditionalInformation(deu.get().getAdditionalInformation());
 
+			return salida;
 		}
 
-		return salida;
+		return null; // Retornar null si no se encuentra el Deudor en la base de datos
 	}
 
 
@@ -143,38 +141,38 @@ public class DeudorController {
 
 		if (!deuTem.isPresent()) {
 			deudor = new Deudor();
-			deudor.setNombre(deu.getRazonSocial());
+			deudor.setCompanyName(deu.getCompanyName());
 			deudor.setRut(deu.getRut());
 
 		} else {
 			deudor = deuTem.get();
-			if (deu.getContactoDeudor() != null) {
-				deu.getContactoDeudor();
+			if (deu.getContactDeudor() != null) {
+				deu.getContactDeudor();
 			}
 		}
-		deudor.setFormaDepago(deu.getFormaDePago());
-		deudor.setContactarAvanzarJuntos(deu.isAvanzarJuntos());
-		deudor.setCondicionPago(deu.getCondicionPago());
-		deudor.setDireccion(deu.getDireccion());
-		deudor.setDetalleOtro(deu.getDetalleOtro());
-		deudor.setCondicionAcepacion(deu.getCondicionAcepacion());
-		deudor.setDetalleOtroCondicion(deu.getDetalleOtroCondicion());
-		deudor.setInformacionAdicional(deu.getInformacionAdicional());
+		deudor.setPaymentMethod(deu.getPaymentMethod());
+		deudor.setAvanzarJuntos(deu.isAvanzarJuntos());
+		deudor.setPaymentCondition(deu.getPaymentCondition());
+		deudor.setAddress(deu.getAddress());
+		deudor.setDetailOther(deu.getDetailOther());
+		deudor.setAcceptanceCondition(deu.getAcceptanceCondition());
+		deudor.setDetailOtherCondition(deu.getDetailOtherCondition());
+		deudor.setAdditionalInformation(deu.getAdditionalInformation());
 
-		deu.getContactoDeudor().stream().forEach(t -> {
-			deudor.addAgregarEliminar(Contacto.builder().correo(t.getCorreo()).direccion(t.getDireccion())
-					.estado(t.getEstado()).nombre(t.getNombre()).telefono(t.getTelefono()).build());
+		deu.getContactDeudor().stream().forEach(t -> {
+			deudor.addAgregarEliminar(Contacto.builder().email(t.getEmail()).address(t.getAddress())
+					.state(t.getState()).name(t.getName()).phone(t.getPhone()).build());
 		});
 
-		deudor.setFecha(LocalDate.now());
+		deudor.setDate(LocalDate.now());
 		this.deudorMongoDAO.save(deudor);
-		
-		try {
-			correo.enviar(deu);
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+//		try {
+//			correo.enviar(deu);
+//		} catch (MessagingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 	}
 
