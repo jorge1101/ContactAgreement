@@ -183,7 +183,11 @@ public class DeudorController {
 		return tem.stream().map(m -> new DeudorDTO(m)).collect(Collectors.toList());
 	}
 
+    public DeudorDTO getDeudor(DeudorDTO deu){
+		Optional<Deudor> deudorRut = deudorMongoDAO.findByRut(deu.getRut());
 
+		return null;
+	}
 
 
 

@@ -41,20 +41,7 @@ public class DeudorDTO {
 	}
 
 	public DeudorDTO(Deudor deu) {
-		/*
-paymentMethod
-paymentCondition
-detailOther
-detailOtherCondition
-avanzarJuntos
-acceptanceCondition
-additionalInformation
-contactDeudor
-    name
-    email
-    phone
-    state
-		*/
+
       //modificar nombres para que coincidan con el front, tambien desde el resto de usos de la funcion
 		date = deu.getDate();
 		rut = deu.getRut();
@@ -84,6 +71,7 @@ contactDeudor
 			this.contactDeudor = contactDeudor;
 		}
 	}
+
 
 
 
