@@ -12,16 +12,18 @@ import org.springframework.web.bind.annotation.*;
 import cl.finterra.ContactAgreement.controller.DeudorController;
 import cl.finterra.ContactAgreement.dto.DeudorDTO;
 import java.time.LocalDate;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("deudor")
 public class DeudorRest {
 	
 	@Autowired
 	DeudorController deudorController;
-	@GetMapping("/{rut}")
-	public ResponseEntity<DeudorDTO> deudor(@PathVariable String rut) {
-		return ResponseEntity.ok(deudorController.buscarDeudor(rut));
-	}
+//	@GetMapping("/{rut}")
+//	public ResponseEntity<DeudorDTO> deudor(@PathVariable String rut) {
+//		return ResponseEntity.ok(deudorController.buscarDeudor(rut));
+//	}
 
 
 	@PostMapping
@@ -36,8 +38,9 @@ public class DeudorRest {
 //		return ResponseEntity.ok(deu);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<DeudorDTO> getDeudor(@PathVariable String id) {
+	@GetMapping("/{rut}")
+	public ResponseEntity<DeudorDTO> getDeudor(@PathVariable String rut ) {
+
 		DeudorDTO deudorDTO = new DeudorDTO();
 		deudorDTO.setRut("20.917.258-");
 		deudorDTO.setDv("1");
@@ -49,20 +52,20 @@ public class DeudorRest {
 		contacto1.setPhone("934567866");
 		contacto1.setState("new");
 		contactos.add(contacto1);
-		List<ContactoDTO> contactos2 = new ArrayList<>();
-		ContactoDTO contacto2 = new ContactoDTO();
-		contacto2.setName("Finterra");
-		contacto2.setEmail("ctm2@gmail.com");
-		contacto2.setPhone("934567866");
-		contacto2.setState("new");
-		contactos2.add(contacto2);
+		deudorDTO.setContactDeudor(contactos);
 		deudorDTO.setPaymentCondition("30");
 		deudorDTO.setPaymentMethod("EMISION VALE VISTA");
 		deudorDTO.setDetailOther("");
 		deudorDTO.setAcceptanceCondition("8");
 		deudorDTO.setDetailOtherCondition("");
 		deudorDTO.setAdditionalInformation("hola 🕺");
-		return ResponseEntity.ok(deudorDTO);
+
+		if (Objects.equals(rut, deudorDTO.getRut())) {
+			return ResponseEntity.ok(deudorDTO);
+		}
+		else {
+			return ResponseEntity.ok(new DeudorDTO());
+		}
 	}
 
 	@GetMapping
