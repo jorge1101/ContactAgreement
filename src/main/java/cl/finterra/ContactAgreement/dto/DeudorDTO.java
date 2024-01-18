@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeudorDTO {
-
 	private String rut;
 	private String dv;
 	private String companyName;
@@ -32,7 +31,7 @@ public class DeudorDTO {
 	public DeudorDTO(Contacto m) {
 	}
 
-	public void addContactoDeudor(ContactoDTO con) {
+	public void addContactDeudor(ContactoDTO con) {
 		if (this.contactDeudor == null) {
 			this.contactDeudor = new ArrayList<ContactoDTO>();
 		}
@@ -56,11 +55,9 @@ public class DeudorDTO {
 		detailOtherCondition = deu.getDetailOtherCondition();
 		additionalInformation = deu.getAdditionalInformation();
 
-		contactDeudor =  deu.getAgregarEliminar().stream()
+		contactDeudor =  deu.getContacts().stream()
 				.map(m -> ContactoDTO.builder().email(m.getEmail())/*.address(m.getAddress())*/.state(m.getState())
 						.name(m.getName()).phone(m.getPhone()).build()).collect(Collectors.toList());
-
-
 	}
 
 

@@ -10,6 +10,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -19,9 +22,10 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @Builder
 @Data
-@Document(collection = "contacto")
+@Document(collection = "contact")
 public class Contacto {
-
+	@Id
+	private String id;
 	@NotNull
 	@PastOrPresent
 	private LocalDate date;
@@ -40,7 +44,7 @@ public class Contacto {
 	public Contacto(String name, String email) {
 	}
 
-	public Collection<Object> getAgregarEliminar() {
+	public Collection<Object> getContact() {
         return null;
     }
 }

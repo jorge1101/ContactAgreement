@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Document(collection = "rutConHash")
 public class RutConHash {
-
 	@Id
 	private String id;
 	private String rut;
