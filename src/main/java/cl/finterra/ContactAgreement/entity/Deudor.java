@@ -30,8 +30,8 @@ public class Deudor {
 	private String dv;
 	@NotBlank(message = "El campo nombre no puede estar en blanco")
 	private String companyName;
-	@NotBlank(message = "El campo direccion no puede estar en blanco")
-	private String address;
+/*	@NotBlank(message = "El campo direccion no puede estar en blanco")*/
+	/*private String address;*/
 	private String rutHash;
 	@NotBlank(message = "El campo formaDepago no puede estar en blanco")
 	private String paymentMethod;

@@ -18,7 +18,7 @@ public class DeudorDTO {
 	private String rut;
 	private String dv;
 	private String companyName;
-	private String address;
+/*	private String address;*/
 	private List<ContactoDTO> contactDeudor;
 	private String paymentCondition;
 	private boolean avanzarJuntos;
@@ -47,7 +47,7 @@ public class DeudorDTO {
 		rut = deu.getRut();
 		dv = deu.getDv();
 		companyName = deu.getCompanyName();
-		address = deu.getAddress();
+/*		address = deu.getAddress();*/
 		paymentCondition = deu.getPaymentCondition();//paymentCondition
 		avanzarJuntos = deu.isAvanzarJuntos();
 		paymentMethod = deu.getPaymentMethod();
@@ -57,7 +57,7 @@ public class DeudorDTO {
 		additionalInformation = deu.getAdditionalInformation();
 
 		contactDeudor =  deu.getAgregarEliminar().stream()
-				.map(m -> ContactoDTO.builder().email(m.getEmail()).address(m.getAddress()).state(m.getState())
+				.map(m -> ContactoDTO.builder().email(m.getEmail())/*.address(m.getAddress())*/.state(m.getState())
 						.name(m.getName()).phone(m.getPhone()).build()).collect(Collectors.toList());
 
 
