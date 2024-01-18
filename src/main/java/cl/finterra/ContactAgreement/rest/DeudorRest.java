@@ -18,13 +18,13 @@ public class DeudorRest {
 	
 	@Autowired
 	DeudorController deudorController;
-	@GetMapping("/{rut}")
-	public ResponseEntity<DeudorDTO> deudor(@PathVariable String rut) {
-		return ResponseEntity.ok(deudorController.buscarDeudor(rut));
-	}
+//	@GetMapping("/{rut}")  //busqueda de deudor por rut
+//	public ResponseEntity<DeudorDTO> deudor(@PathVariable String rut) {
+//		return ResponseEntity.ok(deudorController.buscarDeudor(rut));
+//	}
 
 
-	@PostMapping
+	@PostMapping //metodo pára guardar los deudores
 	public void guardar(@RequestBody DeudorDTO deu) {
 		// Verificación si los datos son nulos
 		if(deu == null) {
@@ -36,26 +36,20 @@ public class DeudorRest {
 //		return ResponseEntity.ok(deu);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/{id}") //mapping para busqueda de deudor que trae sus datos
 	public ResponseEntity<DeudorDTO> getDeudor(@PathVariable String id) {
 		DeudorDTO deudorDTO = new DeudorDTO();
-		deudorDTO.setRut("20.917.258-");
+		deudorDTO.setRut("20.917.258-1");
 		deudorDTO.setDv("1");
-		deudorDTO.setCompanyName("");
-		List<ContactoDTO> contactos = new ArrayList<>();
+		deudorDTO.setCompanyName("Finterra");
+		List<ContactoDTO> contactos = new ArrayList<>(); //crea el array con los contactos
 		ContactoDTO contacto1 = new ContactoDTO();
 		contacto1.setName("Company");
 		contacto1.setEmail("ctm123@gmail.com");
 		contacto1.setPhone("934567866");
 		contacto1.setState("new");
 		contactos.add(contacto1);
-		List<ContactoDTO> contactos2 = new ArrayList<>();
-		ContactoDTO contacto2 = new ContactoDTO();
-		contacto2.setName("Finterra");
-		contacto2.setEmail("ctm2@gmail.com");
-		contacto2.setPhone("934567866");
-		contacto2.setState("new");
-		contactos2.add(contacto2);
+		deudorDTO.setContactDeudor(contactos);
 		deudorDTO.setPaymentCondition("30");
 		deudorDTO.setPaymentMethod("EMISION VALE VISTA");
 		deudorDTO.setDetailOther("");

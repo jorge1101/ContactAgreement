@@ -31,8 +31,10 @@ public class Usuario {
 	@Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
 	@Getter
 	private String password;
+	@Getter
 	private String name;
 	private String accessToken;
+	@Getter
 	private String rut;
 //	@Getter
 //	private String nuevaContrasena;

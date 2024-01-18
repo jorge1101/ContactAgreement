@@ -42,17 +42,10 @@ public class UsuarioRest {
 	public UsuarioRest(JwtTokenProvider tokenProvider) {
 		this.tokenProvider = tokenProvider;
 	}
-	@PostMapping("/login")
+	@PostMapping("/login") //metodo para login usuario admin
 	public ResponseEntity<?> login(@Valid @RequestBody Usuario usuario, BindingResult result) {
 		// Buscar el usuario en la base de datos por su rut
 		Optional<Usuario> authenticatedUser = userDao.findByRut(usuario.getRut());
-
-//		String plain ="1234Abcd.";  // Password plana en caso de necesitar usarse (no creeo)
-//		System.out.println("pass plain "+plain);
-//		System.out.println("pass plainPass "+usuario.getPassword());
-//		System.out.println("pass get "+usuario.getPassword());
-//		System.out.println("pass get newpass "+usuario.getNuevaContrasena());
-
 		// validacion si el usuario existe y la contraseña es correcta validada mediante hashing de spring BCrypt
 		if (authenticatedUser.isPresent() && passwordEncoder.matches(usuario.getPassword(), authenticatedUser.get().getPassword())) {
 			if (result.hasErrors()) { //si hay errores
