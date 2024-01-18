@@ -19,7 +19,6 @@ public class DeudorRest {
 	@Autowired
 	DeudorController deudorController;
 
-
 /*	@GetMapping("/{rut}")
 	public ResponseEntity<DeudorDTO> deudor(@PathVariable String rut) {
 		return ResponseEntity.ok(deudorController.buscarDeudor(rut));
@@ -27,14 +26,15 @@ public class DeudorRest {
 
 
 	@PostMapping
-	public  ResponseEntity<DeudorDTO> guardar(@RequestBody DeudorDTO deu) {
+	public void guardar(@RequestBody DeudorDTO deu) {
 		// Verificación si los datos son nulos
 		if(deu == null) {
 			throw new Error();
 		}
 		// Si no es nulo, entonces guarda los datos
 		deudorController.guardar(deu);
-		return ResponseEntity.ok(deu);
+		//retorna como respuesta el deudor guardado para evitar el error de syntax(solo si es necesario)
+//		return ResponseEntity.ok(deu);
 	}
 
 	@GetMapping("/{id}")
@@ -49,6 +49,7 @@ public class DeudorRest {
 		deudorDTO.setAcceptanceCondition("8");
 		deudorDTO.setDetailOtherCondition("");
 		deudorDTO.setAdditionalInformation("hola 🕺");
+		deudorDTO.setAddress("muy muy lejano");
 		deudorDTO.setAvanzarJuntos(true);
 		List<ContactoDTO> contactos = new ArrayList<>();
 		ContactoDTO contacto1 = new ContactoDTO();

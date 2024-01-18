@@ -67,7 +67,7 @@ public class DeudorHome {
 			if (cursor.hasNext()) {
 				Document result = cursor.next();
 				deu = new DeudorDTO();
-			/*	deu.setAddress(result.getString("CL_DIREC"));*/
+				deu.setAddress(result.getString("CL_DIREC"));
 				deu.setRut(rut);
 				deu.setDv(result.getString("CL_DIG"));
 

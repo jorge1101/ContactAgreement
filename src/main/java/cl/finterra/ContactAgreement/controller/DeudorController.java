@@ -153,14 +153,14 @@ public class DeudorController {
 		deudor.setPaymentMethod(deu.getPaymentMethod());
 		deudor.setAvanzarJuntos(deu.isAvanzarJuntos());
 		deudor.setPaymentCondition(deu.getPaymentCondition());
-		/*deudor.setAddress(deu.getAddress());*/
+		deudor.setAddress(deu.getAddress());
 		deudor.setDetailOther(deu.getDetailOther());
 		deudor.setAcceptanceCondition(deu.getAcceptanceCondition());
 		deudor.setDetailOtherCondition(deu.getDetailOtherCondition());
 		deudor.setAdditionalInformation(deu.getAdditionalInformation());
 
 		deu.getContactDeudor().stream().forEach(t -> {
-			deudor.addAgregarEliminar(Contacto.builder().email(t.getEmail())/*.address(t.getAddress())*/
+			deudor.addAgregarEliminar(Contacto.builder().email(t.getEmail()).address(t.getAddress())
 					.state(t.getState()).name(t.getName()).phone(t.getPhone()).build());
 		});
 
