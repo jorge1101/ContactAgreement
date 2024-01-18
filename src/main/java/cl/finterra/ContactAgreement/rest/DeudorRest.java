@@ -18,11 +18,10 @@ public class DeudorRest {
 	
 	@Autowired
 	DeudorController deudorController;
-
-/*	@GetMapping("/{rut}")
+	@GetMapping("/{rut}")
 	public ResponseEntity<DeudorDTO> deudor(@PathVariable String rut) {
 		return ResponseEntity.ok(deudorController.buscarDeudor(rut));
-	}*/
+	}
 
 
 	@PostMapping
@@ -42,23 +41,27 @@ public class DeudorRest {
 		DeudorDTO deudorDTO = new DeudorDTO();
 		deudorDTO.setRut("20.917.258-");
 		deudorDTO.setDv("1");
-		deudorDTO.setCompanyName("Finterra");
+		deudorDTO.setCompanyName("");
+		List<ContactoDTO> contactos = new ArrayList<>();
+		ContactoDTO contacto1 = new ContactoDTO();
+		contacto1.setName("Company");
+		contacto1.setEmail("ctm123@gmail.com");
+		contacto1.setPhone("934567866");
+		contacto1.setState("new");
+		contactos.add(contacto1);
+		List<ContactoDTO> contactos2 = new ArrayList<>();
+		ContactoDTO contacto2 = new ContactoDTO();
+		contacto2.setName("Finterra");
+		contacto2.setEmail("ctm2@gmail.com");
+		contacto2.setPhone("934567866");
+		contacto2.setState("new");
+		contactos2.add(contacto2);
 		deudorDTO.setPaymentCondition("30");
-		deudorDTO.setPaymentMethod("EMISIÓN VALE VISTA");
+		deudorDTO.setPaymentMethod("EMISION VALE VISTA");
 		deudorDTO.setDetailOther("");
 		deudorDTO.setAcceptanceCondition("8");
 		deudorDTO.setDetailOtherCondition("");
 		deudorDTO.setAdditionalInformation("hola 🕺");
-		deudorDTO.setAddress("muy muy lejano");
-		deudorDTO.setAvanzarJuntos(true);
-		List<ContactoDTO> contactos = new ArrayList<>();
-		ContactoDTO contacto1 = new ContactoDTO();
-		contacto1.setName("Companynameee");
-		contacto1.setEmail("ctmsaas123@gmail.com");
-		contacto1.setPhone("934567866");
-		contacto1.setState("new");
-		contactos.add(contacto1);
-		deudorDTO.setContactDeudor(contactos);
 		return ResponseEntity.ok(deudorDTO);
 	}
 
