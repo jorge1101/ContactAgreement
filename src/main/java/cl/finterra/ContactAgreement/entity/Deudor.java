@@ -50,20 +50,22 @@ public class Deudor {
 
 
 	@Field("contacto")
-	public List<Contacto> contacts;
+	public List<Contacto> agregarEliminar;
 
-	public void addContact(Contacto item) {
-		if(contacts == null) {
-			contacts = new ArrayList<Contacto>();
+	public void addAgregarEliminar(Contacto item) {
+		if(agregarEliminar == null) {
+			agregarEliminar = new ArrayList<Contacto>();
 		}
-		contacts.add(item);
+
+		agregarEliminar.add(item);
 	}
 
-	public void addContactAll(List<Contacto> items) {
-		if(contacts == null) {
-			contacts = new ArrayList<Contacto>();
+	public void addAllAgregarEliminar(List<Contacto> items) {
+		if(agregarEliminar == null) {
+			agregarEliminar = new ArrayList<Contacto>();
 		}
-		contacts.addAll(items);
+
+		agregarEliminar.addAll(items);
 	}
 
 

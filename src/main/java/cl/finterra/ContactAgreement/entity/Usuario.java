@@ -19,17 +19,23 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Document(collection = "usuario")
 public class Usuario {
+
 	@Id
 	private String id;
+
 	@NotBlank(message = "El email es obligatorio")
 	@Email(message = "El email debe ser válido")
 	private String email;
+
 	@NotBlank(message = "La contraseña no puede estar en blanco")
 	@Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+	@Getter
 	private String password;
 	private String name;
 	private String accessToken;
 	private String rut;
+//	@Getter
+//	private String nuevaContrasena;
 	private String plainPassword;
 
 

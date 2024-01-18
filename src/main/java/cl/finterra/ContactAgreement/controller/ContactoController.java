@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 @Service
 public class ContactoController {
     @Autowired
-    private ContactoMongoDAO contactMongoDAO;
+    private ContactoMongoDAO agregarEliminarMongoDAO;
 
 
 
     @Autowired
     private UsuarioMongoDAO usuarioService;
 
-    public boolean register(ContactoController newContact) {
+    public boolean register(ContactoController nuevoAgregarEliminar) {
         try {
 
             return true; // El registro fue exitoso
@@ -32,14 +32,14 @@ public class ContactoController {
         }
     }
 
-    public Contacto saveContact(Contacto agregarEliminar) {
-        return contactMongoDAO.save(agregarEliminar);
+    public Contacto saveAgregarEliminar(Contacto agregarEliminar) {
+        return agregarEliminarMongoDAO.save(agregarEliminar);
     }
 
-    public String getEmail() {
+    public String getCorreo() {
 
-            List<Contacto> tem = this.contactMongoDAO.findAll();
-            tem.forEach(f -> f.getContact().size());
+            List<Contacto> tem = this.agregarEliminarMongoDAO.findAll();
+            tem.forEach(f -> f.getAgregarEliminar().size());
             return tem.stream().map(m -> new ContactoDTO(m)).collect(Collectors.toList()).toString();
 
     }

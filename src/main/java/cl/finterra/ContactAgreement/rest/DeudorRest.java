@@ -68,14 +68,14 @@ public class DeudorRest {
 	}
 
 	@PostMapping("/{id}/agregar-contacto")
-	public ResponseEntity<Void> addContact(@PathVariable String id, @RequestBody ContactoDTO contactoDTO) {
-		deudorController.addContact(id, contactoDTO);
+	public ResponseEntity<Void> agregarContacto(@PathVariable String id, @RequestBody ContactoDTO contactoDTO) {
+		deudorController.agregarContacto(id, contactoDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@PutMapping("/{id}/eliminar-contacto/{contactoId}")
-	public ResponseEntity<Void> deleteContact(@PathVariable String id, @PathVariable Long contactoId) {
-		deudorController.deleteContact(id, contactoId);
+	public ResponseEntity<Void> eliminarContacto(@PathVariable String id, @PathVariable Long contactoId) {
+		deudorController.eliminarContacto(id, contactoId);
 		return ResponseEntity.noContent().build();
 	}
 

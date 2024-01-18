@@ -3,7 +3,7 @@ package cl.finterra.ContactAgreement.dto;
 import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-@Data//trae get y set
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +14,8 @@ public class UsuarioDTO {
     @NotBlank(message = "La contraseña es obligatoria")
     private String password;
     private String accessToken;
+    @Getter
     private static String rut;
+    @Getter
     private static String name;
 }

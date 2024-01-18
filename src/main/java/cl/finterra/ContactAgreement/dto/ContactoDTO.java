@@ -8,26 +8,32 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactoDTO {
-	private String id;
+    @Getter
 	private String name;
+	@Getter
 	private String email;
+	@Getter
 	private String phone;
-/*	private String address;*/
+	@Getter
+	private String address;
+	@Getter
 	private String state;
 
 	public ContactoDTO(Contacto con) {
-
 		name = con.getName();
 		email = con.getEmail();
 		phone = con.getPhone();
-	/*	address = con.getAddress();*/
+		address = con.getAddress();
 		state = con.getState();
 
-/*		contactoDeudor =  con.getContact().stream()
-				.map(m -> ContactoDTO.builder().email(m.getEmail())*//*.address(m.getAddress())*//*.estado(m.getState())
-						.nombre(m.getName()).telefono(m.getPhone()).build()).collect(Collectors.toList());*/
+//		contactoDeudor =  con.getAgregarEliminar().stream()
+//				.map(m -> ContactoDTO.builder().correo(m.getCorreo()).direccion(m.getDireccion()).estado(m.getEstado())
+//						.nombre(m.getNombre()).telefono(m.getTelefono()).build()).collect(Collectors.toList());
 
 	}
+
+
+
 
 
 }

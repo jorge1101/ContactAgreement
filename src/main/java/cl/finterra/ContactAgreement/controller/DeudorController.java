@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 @Service
 @NoArgsConstructor
 public class DeudorController {
+
 	@Autowired
 	RutHashMongoDAO rutDao;
 	@Autowired
@@ -38,71 +39,85 @@ public class DeudorController {
 	ContactoMongoDAO contactoMongoDAO;
 
 	private DeudorDTO deudorDTO;
-	public void updateContact(String id, ContactoDTO contactoDTO) {
+	public void actualizarContacto(String id, ContactoDTO contactoDTO) {
 		Optional<Contacto> deudorOptional = contactoMongoDAO.findById(id);
 
 		if (deudorOptional.isPresent()) {
 			Contacto contacto = deudorOptional.get();
 			// Aquí deberías implementar la lógica para encontrar y actualizar el contacto en la lista
 			// Puedes buscar el contacto por su ID y luego actualizar sus campos con los valores de contactoDTO
+			// ...
+
+
 			contactoMongoDAO.save(contacto);
 		} else {
 			throw new EntityNotFoundException("No se encontró un deudor con el ID proporcionado");
 		}
 	}
 
-	public void addContact(String id, ContactoDTO contactoDTO) {
+	public void agregarContacto(String id, ContactoDTO contactoDTO) {
 		Optional<Contacto> deudorOptional = contactoMongoDAO.findById(id);
 
 		if (deudorOptional.isPresent()) {
 			Contacto deudor = deudorOptional.get();
+
 			// Aquí deberías validar lógica de negocio antes de agregar el contacto
+
 			// Crear el contacto y agregarlo al deudor
 			Contacto nuevoContacto = new Contacto(contactoDTO.getName(), contactoDTO.getEmail());
+
 			contactoMongoDAO.save(nuevoContacto);
 		} else {
 			throw new EntityNotFoundException("No se encontró un deudor con el ID proporcionado");
 		}
 	}
 
-	public void deleteContact(String id, Long contactoId) {
+	public void eliminarContacto(String id, Long contactoId) {
 		Optional<Contacto> contactoOptional = contactoMongoDAO.findById(id);
+
+
 		if (contactoOptional.isPresent()) {
 			Contacto contacto = contactoOptional.get();
+
 			contactoMongoDAO.save(contacto);
 		} else {
 			throw new EntityNotFoundException("No se encontró un deudor con el ID proporcionado");
 		}
 	}
 
-	public DeudorDTO findDeudor(String rut) {
+
+	public DeudorDTO buscarDeudor(String rut) {
 		// Validación para asegurar que el rut no sea nulo o vacío
 		if (StringUtils.isBlank(rut)) {
 			return null;
 		}
+
 		Optional<Deudor> deu = deudorMongoDAO.findByRut(rut);
+
 		if (deu.isPresent()) {
 			DeudorDTO salida = new DeudorDTO();
 			DeudorHome home = new DeudorHome();
 			salida = home.getDeudorContacto(rut);
 
-			salida.getContactDeudor().removeIf(r -> deu.get().getContacts().stream().anyMatch(a ->
+			salida.getContactDeudor().removeIf(r -> deu.get().getAgregarEliminar().stream().anyMatch(a ->
 					a.getName().equalsIgnoreCase(r.getName()) &&
 							a.getEmail().equalsIgnoreCase(r.getEmail()) &&
-							a.getPhone().equals(r.getPhone()) //&&
-							/*a.getAddress().equals(r.getAddress())*/
+							a.getPhone().equals(r.getPhone()) &&
+							a.getAddress().equals(r.getAddress())
 			));
-			for (Contacto iterf : deu.get().getContacts()) {
-				if (iterf.getState().equals("delete") || iterf.getState().equals("new")) {
-					salida.addContactDeudor(ContactoDTO.builder()
+
+			for (Contacto iterf : deu.get().getAgregarEliminar()) {
+				if (iterf.getState().equals("eliminar") || iterf.getState().equals("nuevo")) {
+					salida.addContactoDeudor(ContactoDTO.builder()
 							.name(iterf.getName())
 							.email(iterf.getEmail())
-							/*.address(iterf.getAddress())*/
+							.address(iterf.getAddress())
 							.state(iterf.getState())
 							.phone(iterf.getPhone())
 							.build());
 				}
 			}
+
 			salida.setAvanzarJuntos(deu.get().isAvanzarJuntos());
 			salida.setPaymentCondition(deu.get().getPaymentCondition());
 			salida.setPaymentMethod(deu.get().getPaymentMethod());
@@ -110,19 +125,25 @@ public class DeudorController {
 			salida.setAcceptanceCondition(deu.get().getAcceptanceCondition());
 			salida.setDetailOtherCondition(deu.get().getDetailOtherCondition());
 			salida.setAdditionalInformation(deu.get().getAdditionalInformation());
+
 			return salida;
 		}
+
 		return null; // Retornar null si no se encuentra el Deudor en la base de datos
 	}
 
+
 	public void guardar(DeudorDTO deu) {
+
 		
 		Optional<Deudor> deuTem = deudorMongoDAO.findByRut(deu.getRut());
 		Deudor deudor;
+
 		if (!deuTem.isPresent()) {
 			deudor = new Deudor();
 			deudor.setCompanyName(deu.getCompanyName());
 			deudor.setRut(deu.getRut());
+
 		} else {
 			deudor = deuTem.get();
 			if (deu.getContactDeudor() != null) {
@@ -139,7 +160,7 @@ public class DeudorController {
 		deudor.setAdditionalInformation(deu.getAdditionalInformation());
 
 		deu.getContactDeudor().stream().forEach(t -> {
-			deudor.addContact(Contacto.builder().email(t.getEmail())/*.address(t.getAddress())*/
+			deudor.addAgregarEliminar(Contacto.builder().email(t.getEmail())/*.address(t.getAddress())*/
 					.state(t.getState()).name(t.getName()).phone(t.getPhone()).build());
 		});
 
@@ -155,16 +176,19 @@ public class DeudorController {
 
 	}
 
+
 	public List<DeudorDTO> getLista() {
 		List<Deudor> tem = this.deudorMongoDAO.findAll();
-		tem.forEach(f -> f.getContacts().size());
+		tem.forEach(f -> f.getAgregarEliminar().size());
 		return tem.stream().map(m -> new DeudorDTO(m)).collect(Collectors.toList());
 	}
 
     public DeudorDTO getDeudor(DeudorDTO deu){
 		Optional<Deudor> deudorRut = deudorMongoDAO.findByRut(deu.getRut());
+
 		return null;
 	}
+
 
 
 }
