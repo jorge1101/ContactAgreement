@@ -14,6 +14,8 @@ public class UsuarioDTO {
     @NotBlank(message = "La contraseña es obligatoria")
     private String password;
     private String accessToken;
+    @Getter
     private static String rut;
+    @Getter
     private static String name;
 }

@@ -47,7 +47,7 @@ public class DeudorHome {
 				ContactoDTO tem = ContactoDTO.builder()
 						.email(contactDoc.getString("cde_mail"))
 						.phone(contactDoc.getString("cde_fono"))
-						.address(contactDoc.getString("cde_dir"))
+//						.address(contactDoc.getString("cde_dir"))
 						.name(contactDoc.getString("cde_nombre")).build();
 				listContacto.add(tem);
 			}
