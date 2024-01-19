@@ -7,6 +7,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import cl.finterra.ContactAgreement.Security.TokenRefreshException;
+import org.springframework.context.annotation.Bean;
+
 import java.security.Key;
 import java.util.Date;
 
@@ -38,6 +40,7 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
 
     public String renewAccessToken(String refreshToken) throws TokenRefreshException {
         try {

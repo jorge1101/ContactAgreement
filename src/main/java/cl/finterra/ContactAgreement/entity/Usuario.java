@@ -31,7 +31,4 @@ public class Usuario {
 	private String accessToken;
 	private String rut;
 	private String plainPassword;
-
-
-
 }

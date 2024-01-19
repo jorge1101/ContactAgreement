@@ -2,22 +2,16 @@ package cl.finterra.ContactAgreement.entity;
 
 import java.time.LocalDate;
 import java.util.Collection;
-
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -40,10 +34,8 @@ public class Contacto {
 	private String address;
 	private String state;
 	private String ContactDeudor;
-
 	public Contacto(String name, String email) {
 	}
-
 	public Collection<Object> getContact() {
         return null;
     }

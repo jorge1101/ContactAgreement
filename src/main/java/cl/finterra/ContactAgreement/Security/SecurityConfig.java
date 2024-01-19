@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -42,17 +43,17 @@ public class SecurityConfig {
         http
                 //configuraciones de seguridad
                 .formLogin(AbstractHttpConfigurer::disable)
-//                .requestCache(AbstractHttpConfigurer::disable)
-//                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .cors(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Sesiones sin estado para APIs REST
-                        .invalidSessionUrl("/admin")
-                        .maximumSessions(1) //maximo de sesiones
-                        .expiredUrl("/admin") //url para sesion expirada
-                        .maxSessionsPreventsLogin(true)
-                )
+                .requestCache(AbstractHttpConfigurer::disable) //aplicado por defecto conEnableWebSecurity
+                .cors(cors -> corsConfigurationSource())
+                .csrf(AbstractHttpConfigurer::disable) //aplicado por defecto conEnableWebSecurity
+                .sessionManagement(httpSecuritySessionManagementConfigurer ->{
+                    httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Sesiones sin estado para APIs REST
+                            .invalidSessionUrl("/admin/iniciar-sesion")
+                            .maximumSessions(1) //maximo de sesiones
+                            .expiredUrl("/admin/iniciar-sesion") //url para sesion expirada
+                            .maxSessionsPreventsLogin(true);
+                    httpSecuritySessionManagementConfigurer.sessionFixation().migrateSession();
+                })
                 .logout(logout -> logout
                         .logoutSuccessUrl("/admin")
                         .invalidateHttpSession(true) // Invalida la sesión al cerrar sesión

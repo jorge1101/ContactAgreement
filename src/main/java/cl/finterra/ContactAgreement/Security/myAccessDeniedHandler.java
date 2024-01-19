@@ -14,7 +14,6 @@ public class myAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException, java.io.IOException {
         // Agregar mensajes de registro
         System.out.println("Acceso denegado: " + accessDeniedException.getMessage());
-
         // Resto de la lógica
         response.sendRedirect("/error/access-denied");
     }

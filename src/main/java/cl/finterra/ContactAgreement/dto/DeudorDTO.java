@@ -3,12 +3,10 @@ package cl.finterra.ContactAgreement.dto;
 import cl.finterra.ContactAgreement.entity.Contacto;
 import cl.finterra.ContactAgreement.entity.Deudor;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,7 +15,7 @@ public class DeudorDTO {
 	private String rut;
 	private String dv;
 	private String companyName;
-/*	private String address;*/
+//	private String address;
 	private List<ContactoDTO> contactDeudor;
 	private String paymentCondition;
 	private boolean avanzarJuntos;
@@ -46,7 +44,7 @@ public class DeudorDTO {
 		rut = deu.getRut();
 		dv = deu.getDv();
 		companyName = deu.getCompanyName();
-/*		address = deu.getAddress();*/
+//		address = deu.getAddress();
 		paymentCondition = deu.getPaymentCondition();//paymentCondition
 		avanzarJuntos = deu.isAvanzarJuntos();
 		paymentMethod = deu.getPaymentMethod();
@@ -60,7 +58,6 @@ public class DeudorDTO {
 						.name(m.getName()).phone(m.getPhone()).build()).collect(Collectors.toList());
 	}
 
-
 	public void setContactDeudor(List<ContactoDTO> contactDeudor) {
 		if (contactDeudor == null) {
 			this.contactDeudor = new ArrayList<>();
@@ -68,8 +65,4 @@ public class DeudorDTO {
 			this.contactDeudor = contactDeudor;
 		}
 	}
-
-
-
-
 }

@@ -16,7 +16,6 @@ import cl.finterra.ContactAgreement.entity.RutConHash;
 
 @Service
 public class ActualizarRutConHashController {
-
 	@Autowired
 	private RutHashMongoDAO rutDao;
 	public void actualizar() {
@@ -36,7 +35,6 @@ public class ActualizarRutConHashController {
 	System.out.println("total guaraddo " + rut.size());
 	tem.removeIf(r -> rut.contains(r));
 	System.out.println("a actualizar " + tem.size());
-
 	if (tem.size() > 0) {
 		tem.stream().forEach(t -> {
 			listaAGuardar.add(new RutConHash(t, DigestUtils.sha256Hex(t)));

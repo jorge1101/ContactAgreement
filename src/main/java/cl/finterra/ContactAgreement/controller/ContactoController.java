@@ -16,9 +16,6 @@ import java.util.stream.Collectors;
 public class ContactoController {
     @Autowired
     private ContactoMongoDAO contactMongoDAO;
-
-
-
     @Autowired
     private UsuarioMongoDAO usuarioService;
 
@@ -31,19 +28,15 @@ public class ContactoController {
             return false; // Hubo un error en el registro
         }
     }
-
     public Contacto saveContact(Contacto agregarEliminar) {
         return contactMongoDAO.save(agregarEliminar);
     }
 
     public String getEmail() {
-
             List<Contacto> tem = this.contactMongoDAO.findAll();
             tem.forEach(f -> f.getContact().size());
             return tem.stream().map(m -> new ContactoDTO(m)).collect(Collectors.toList()).toString();
-
     }
-
     public void deleteById(String id) {
     }
 }

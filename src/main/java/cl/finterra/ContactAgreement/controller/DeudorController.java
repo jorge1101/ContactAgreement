@@ -6,14 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
-
 import cl.finterra.ContactAgreement.dao.ContactoMongoDAO;
 import io.micrometer.common.util.StringUtils;
-//import jakarta.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import cl.finterra.ContactAgreement.correo.ConfigurarCorreo;
 import cl.finterra.ContactAgreement.dao.DeudorMongoDAO;
 import cl.finterra.ContactAgreement.dao.RutHashMongoDAO;

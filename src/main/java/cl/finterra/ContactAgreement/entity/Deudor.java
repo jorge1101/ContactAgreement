@@ -51,7 +51,6 @@ public class Deudor {
 
 	@Field("contacto")
 	public List<Contacto> contacts;
-
 	public void addContact(Contacto item) {
 		if(contacts == null) {
 			contacts = new ArrayList<Contacto>();
