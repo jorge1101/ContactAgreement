@@ -55,7 +55,7 @@ public class DeudorRest {
 		deudorDTO.setRut("20.917.258-"+deudorDTO.getDv());
 		deudorDTO.setCompanyName(toInitcap("finterra"));
 		deudorDTO.setPaymentCondition("30");
-		deudorDTO.setPaymentMethod("EMISION VALE VISTA");
+		deudorDTO.setPaymentMethod("EMISIÓN VALE VISTA");
 		deudorDTO.setDetailOther("");
 		deudorDTO.setAcceptanceCondition("8");
 		deudorDTO.setDetailOtherCondition("");
@@ -63,10 +63,11 @@ public class DeudorRest {
 		deudorDTO.setAdditionalInformation("hola 🕺");
 		List<ContactoDTO> Contacto = new ArrayList<>();
 		ContactoDTO contacto = new ContactoDTO();
+		contacto.setId("id1");
 		contacto.setName("CompanyName");
 		contacto.setEmail("ctm123@gmail.com");
 		contacto.setPhone("967543233");
-		contacto.setState("listo");
+		contacto.setState("new");
 		Contacto.add(contacto);
 		deudorDTO.setContactDeudor(Contacto);
 		try {
