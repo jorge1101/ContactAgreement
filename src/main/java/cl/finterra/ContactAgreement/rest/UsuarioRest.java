@@ -61,17 +61,23 @@ public class UsuarioRest {
 				}
 				return ResponseEntity.badRequest().body(errorMessage.toString());
 			}
+//			try {
+//				Thread.sleep(2000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
 
 			// La contraseña es correcta, proceder con la autenticación
 			String accessToken = tokenProvider.generateAccessToken(usuario.getEmail());
 			authenticatedUser.get().setAccessToken(accessToken);
 			return ResponseEntity.ok(authenticatedUser.get());
+
 		} else {
 			String errorMessage = "Credenciales inválidas. Usuario o contraseña incorrectos.";
 			LOGGER.warning("Intento de inicio de sesión fallido para el usuario con el rut: " + usuario.getRut() + ". " + errorMessage);
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMessage);
 		}
-		
+
 	}
 	@Autowired
 	private UsuarioMongoDAO usuarioRepository;

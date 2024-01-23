@@ -27,18 +27,47 @@ public class DeudorRest {
 //	public ResponseEntity<DeudorDTO> deudor(@PathVariable String rut) {
 //		return ResponseEntity.ok(deudorController.findDeudor(rut));
 //	}
-
-
+	public static final ContactoDTO contactoDTO = new ContactoDTO();
 	@PostMapping
 	public  ResponseEntity<DeudorDTO> guardar(@RequestBody DeudorDTO deu) {
 		// Verificación si los datos son nulos
-		if(deu == null) {
+		if(deu == null ) {
 			throw new Error();
 		}
 		// Si no es nulo, entonces guarda los datos
 		deudorController.guardar(deu);
 		return ResponseEntity.ok(deu);
 	}
+	/*
+	@PostMapping
+	public ResponseEntity<DeudorDTO> guardar(@RequestBody DeudorDTO deudorDTO) {
+		// Verificación si los datos son nulos
+		if (deudorDTO == null || deudorDTO.getContactDeudor() == null) {
+			throw new Error("Los datos del deudor o los contactos son nulos.");
+		}
+
+		// Verificar duplicados en la lista de contactos
+		List<ContactoDTO> contactosGuardados = deudorDTO.getContactDeudor();
+		for (ContactoDTO nuevoContacto : deudorDTO.getContactDeudor()) {
+			if (contactosGuardados.stream().anyMatch(
+					c -> c.getId().equals(nuevoContacto.getId())
+							&& c.getName().equals(nuevoContacto.getName())
+							&& c.getPhone().equals(nuevoContacto.getPhone())
+			)) {
+				// Manejar duplicados según tu lógica
+				System.out.println("qweewcdww");
+//				throw new DuplicadosException("Ya existe un contacto con la misma ID, nombre y teléfono en la lista.");
+			}
+		}
+		/*
+		    public DuplicadosException(String mensaje) {
+        super(mensaje);
+    }
+	 Si no hay duplicados, entonces guardar los datos
+		deudorController.guardar(deudorDTO);
+		return ResponseEntity.ok(deudorDTO);
+}
+	 */
 	public static String toInitcap(String input) {
 		if (input == null || input.isEmpty()) {
 			return input;
@@ -47,12 +76,26 @@ public class DeudorRest {
 		// primer carácter en mayusculas
 		return Character.toUpperCase(input.charAt(0)) + input.substring(1);
 	}
+
+	@PutMapping("/{id}/state")
+	public ResponseEntity<DeudorDTO> updateState(@PathVariable Long id, @RequestBody List<ContactoDTO> nuevosContactos) {
+
+		DeudorDTO deudorDTO = DeudorDTO.obtenerDeudorPorId(id);
+
+		// Modificar el estado de la lista de contactos en el DeudorDTO
+		deudorDTO.setContactos(nuevosContactos);
+
+		// Guardar el DeudorDTO actualizado
+		DeudorDTO deudorActualizado = deudorController.guardarDeudor(contactoDTO);
+
+		return new ResponseEntity<>(deudorActualizado, HttpStatus.OK);
+	}
 	@GetMapping("/{id}")
 	public ResponseEntity<byte[]> getDeudor(@PathVariable String id) {
 
 		DeudorDTO deudorDTO = new DeudorDTO();
 		deudorDTO.setDv("1");
-		deudorDTO.setRut("20.917.258-"+deudorDTO.getDv());
+		deudorDTO.setRut("20.917.258");
 		deudorDTO.setCompanyName(toInitcap("finterra"));
 		deudorDTO.setPaymentCondition("30");
 		deudorDTO.setPaymentMethod("EMISIÓN VALE VISTA");

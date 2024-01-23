@@ -163,4 +163,16 @@ public class DeudorController {
 	}
 
 
+
+
+	public DeudorDTO guardarDeudor(ContactoDTO contactoDTO) {
+		Optional<Contacto> Optional = contactoMongoDAO.findById(contactoDTO.getId());
+		if (Optional.isPresent()) {
+			Contacto contact = Optional.get();
+			contact.setState(contactoDTO.getState());
+			contactoMongoDAO.save(contact);
+		}
+			return new DeudorDTO();
+	}
+
 }

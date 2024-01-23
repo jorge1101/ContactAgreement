@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeudorDTO {
+	private String id;
 	private String rut;
 	private String dv;
 	private String companyName;
@@ -27,6 +28,10 @@ public class DeudorDTO {
 	private LocalDate date;
 
 	public DeudorDTO(Contacto m) {
+	}
+
+	public static DeudorDTO obtenerDeudorPorId(Long id) {
+		return null;
 	}
 
 	public void addContactDeudor(ContactoDTO con) {
@@ -65,4 +70,16 @@ public class DeudorDTO {
 			this.contactDeudor = contactDeudor;
 		}
 	}
+	private static List<ContactoDTO> contactosGuardados = new ArrayList<>();
+
+
+
+	// Método para guardar un contacto
+	public void guardarContacto(ContactoDTO contactoDTO) {
+		contactosGuardados.add(contactoDTO);
+	}
+	public void setContactos(List<ContactoDTO> nuevosContactos) {
+	}
+
+
 }
