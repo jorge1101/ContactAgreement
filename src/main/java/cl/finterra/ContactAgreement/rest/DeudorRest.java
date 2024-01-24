@@ -23,7 +23,7 @@ public class DeudorRest {
 	
 	@Autowired
 	DeudorController deudorController;
-//	@GetMapping("/{rut}")
+//	@GetMapping("/{rut}/find")
 //	public ResponseEntity<DeudorDTO> deudor(@PathVariable String rut) {
 //		return ResponseEntity.ok(deudorController.findDeudor(rut));
 //	}
@@ -31,43 +31,28 @@ public class DeudorRest {
 	@PostMapping
 	public  ResponseEntity<DeudorDTO> guardar(@RequestBody DeudorDTO deu) {
 		// Verificación si los datos son nulos
-		if(deu == null ) {
+		if(deu == null  ) { //|| deu.getContactDeudor().getFirst().getId() == contactoDTO.getId()
 			throw new Error();
+		} else {
+			// Si no es nulo, entonces guarda los datos
+			deudorController.guardar(deu);
+			return ResponseEntity.ok(deu);
 		}
-		// Si no es nulo, entonces guarda los datos
-		deudorController.guardar(deu);
-		return ResponseEntity.ok(deu);
 	}
-	/*
-	@PostMapping
-	public ResponseEntity<DeudorDTO> guardar(@RequestBody DeudorDTO deudorDTO) {
-		// Verificación si los datos son nulos
-		if (deudorDTO == null || deudorDTO.getContactDeudor() == null) {
-			throw new Error("Los datos del deudor o los contactos son nulos.");
-		}
 
-		// Verificar duplicados en la lista de contactos
-		List<ContactoDTO> contactosGuardados = deudorDTO.getContactDeudor();
-		for (ContactoDTO nuevoContacto : deudorDTO.getContactDeudor()) {
-			if (contactosGuardados.stream().anyMatch(
-					c -> c.getId().equals(nuevoContacto.getId())
-							&& c.getName().equals(nuevoContacto.getName())
-							&& c.getPhone().equals(nuevoContacto.getPhone())
-			)) {
-				// Manejar duplicados según tu lógica
-				System.out.println("qweewcdww");
-//				throw new DuplicadosException("Ya existe un contacto con la misma ID, nombre y teléfono en la lista.");
-			}
-		}
-		/*
-		    public DuplicadosException(String mensaje) {
-        super(mensaje);
-    }
-	 Si no hay duplicados, entonces guardar los datos
-		deudorController.guardar(deudorDTO);
+	@PutMapping("/{id}/actualizar-condicion")
+	public ResponseEntity<DeudorDTO> actualizarCondicionContacto(
+			@PathVariable String id,
+			@RequestBody ContactoDTO contactoDTO) {
+
+		// Lógica para validar y actualizar la condición en el DeudorDTO
+		DeudorDTO deudorDTO = deudorController.actualizarCondicionContacto(id, contactoDTO);
+
+
+		// Puedes devolver el DeudorDTO actualizado o un ResponseEntity según tus necesidades
 		return ResponseEntity.ok(deudorDTO);
-}
-	 */
+	}
+
 	public static String toInitcap(String input) {
 		if (input == null || input.isEmpty()) {
 			return input;

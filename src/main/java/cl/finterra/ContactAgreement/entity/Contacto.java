@@ -34,6 +34,7 @@ public class Contacto {
 	private String address;
 	private String state;
 	private String ContactDeudor;
+	private String Condition;
 	public Contacto(String name, String email) {
 	}
 	public Collection<Object> getContact() {

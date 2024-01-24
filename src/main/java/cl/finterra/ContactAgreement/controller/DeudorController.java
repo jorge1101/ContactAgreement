@@ -2,10 +2,13 @@ package cl.finterra.ContactAgreement.controller;
 
 //import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+
+import cl.finterra.ContactAgreement.Service.DeudorService;
 import cl.finterra.ContactAgreement.dao.ContactoMongoDAO;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,7 @@ public class DeudorController {
 	ContactoMongoDAO contactoMongoDAO;
 
 	private DeudorDTO deudorDTO;
-	public void updateContact(String id, ContactoDTO contactoDTO) {
+	public void updateContact(String id, DeudorMongoDAO deudorMongoDAO) {
 		Optional<Contacto> deudorOptional = contactoMongoDAO.findById(id);
 
 		if (deudorOptional.isPresent()) {
@@ -46,6 +49,44 @@ public class DeudorController {
 			throw new EntityNotFoundException("No se encontró un deudor con el ID proporcionado");
 		}
 	}
+	public DeudorDTO actualizarCondicionContacto(String id, ContactoDTO contactoDTO) {
+		Optional<Deudor> deudorOptional = deudorMongoDAO.findById(id);
+		String contactoId = contactoDTO.getId();
+		System.out.println("deudorOptional " + deudorOptional);
+		System.out.println("get " + contactoDTO.getId());
+
+		if (deudorOptional.map(Deudor::getId).orElse("").equals(contactoId)) {
+			Deudor deudorExistente = deudorOptional.get();
+
+			Optional<ContactoDTO> contactoDeudorOptional = deudorExistente.getContactDeudor()
+					.stream()
+					.filter(c -> c.getId().equals(contactoId))
+					.findFirst();
+
+			if (contactoDeudorOptional.isPresent()) {
+				ContactoDTO contactoExistente = contactoDeudorOptional.get();
+				contactoExistente.setCondition(contactoDTO.getCondition());
+
+				// Guarda el objeto Deudor actualizado
+				deudorMongoDAO.save(deudorExistente);
+
+				// Crea un nuevo DeudorDTO y configura sus propiedades
+				DeudorDTO deudorDTO = new DeudorDTO();
+				deudorDTO.setRut(deudorExistente.getRut());
+				// Configura otras propiedades según tu lógica
+
+				// Devuelve el nuevo DeudorDTO
+				return deudorDTO;
+			} else {
+				throw new EntityNotFoundException("No se encontró un contacto con el ID proporcionado en la lista");
+			}
+		} else {
+			throw new EntityNotFoundException("No se encontró un Deudor con el ID proporcionado");
+		}
+	}
+
+
+
 
 	public void addContact(String id, ContactoDTO contactoDTO) {
 		Optional<Contacto> deudorOptional = contactoMongoDAO.findById(id);

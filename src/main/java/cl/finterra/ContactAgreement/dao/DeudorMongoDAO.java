@@ -8,5 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import cl.finterra.ContactAgreement.entity.Deudor;
 public interface DeudorMongoDAO extends MongoRepository<Deudor, String> {
 	Optional<Deudor> findByRut(String rut);
+	Optional<Deudor> findById(String id);
 	List<Deudor> findAll();
+
 }

@@ -2,8 +2,10 @@ package cl.finterra.ContactAgreement.entity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import cl.finterra.ContactAgreement.dto.ContactoDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -66,4 +68,7 @@ public class Deudor {
 	}
 
 
+    public List<ContactoDTO> getContactDeudor() {
+		return getContactDeudor();
+    }
 }
