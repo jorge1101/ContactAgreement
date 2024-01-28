@@ -1,18 +1,20 @@
 package cl.finterra.ContactAgreement.rest;
 
-import cl.finterra.ContactAgreement.controller.DeudorController;
+import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import cl.finterra.ContactAgreement.dto.ContactoDTO;
-import cl.finterra.ContactAgreement.dto.DeudorDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import cl.finterra.ContactAgreement.controller.DeudorController;
+import cl.finterra.ContactAgreement.dto.DeudorDTO;
+import java.time.LocalDate;
 import java.util.zip.GZIPOutputStream;
 
 @RestController
@@ -93,7 +95,7 @@ public class DeudorRest {
 		contacto.setName("CompanyName");
 		contacto.setEmail("ctm123@gmail.com");
 		contacto.setPhone("967543233");
-		contacto.setState("");
+		contacto.setState("new");
 		Contacto.add(contacto);
 		deudorDTO.setContactDeudor(Contacto);
 		try {
